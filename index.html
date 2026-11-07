@@ -1,0 +1,1916 @@
+<!-- ... existing code ... -->
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#090d16">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>TARANG INSTITUTE OF COMPUTER ACADEMY (TICA) | Dengausta, Ganjam, Odisha</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        tica: {
+                            50: '#eef6ff',
+                            100: '#d9eaff',
+                            200: '#bcdaff',
+                            500: '#2563eb',
+                            600: '#1d4ed8',
+                            700: '#1e40af',
+                            800: '#1e3a8a',
+                            900: '#0f172a',
+                            950: '#090d16',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 5s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-8px)' },
+                        }
+                    }
+                }
+            }
+        }
+
+        // Multi-stage Google Drive direct-image resolver & fallback handler
+        window.handleDriveImgError = function(imgEl, fileId) {
+            if (!fileId) {
+                imgEl.classList.add('hidden');
+                if (imgEl.nextElementSibling) imgEl.nextElementSibling.classList.remove('hidden');
+                return;
+            }
+            const step = parseInt(imgEl.getAttribute('data-fallback-step') || '0', 10);
+            if (step === 0) {
+                imgEl.setAttribute('data-fallback-step', '1');
+                imgEl.src = 'https://lh3.googleusercontent.com/d/' + fileId + '=w800';
+            } else if (step === 1) {
+                imgEl.setAttribute('data-fallback-step', '2');
+                imgEl.src = 'https://drive.google.com/uc?export=view&id=' + fileId;
+            } else {
+                imgEl.classList.add('hidden');
+                if (imgEl.nextElementSibling) {
+                    imgEl.nextElementSibling.classList.remove('hidden');
+                }
+            }
+        };
+    </script>
+
+    <style>
+        :root {
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-right: env(safe-area-inset-right, 0px);
+            --marquee-duration: 38s;
+        }
+
+        html, body {
+            -webkit-text-size-adjust: 100%;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            overflow-x: hidden;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            -webkit-tap-highlight-color: transparent;
+            touch-action: pan-y;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Custom Scrollbar & Glassmorphism Utilities */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2563eb;
+            border-radius: 4px;
+        }
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+        .hero-mesh {
+            background-color: #090d16;
+            background-image: 
+                radial-gradient(at 15% 20%, rgba(37, 99, 235, 0.28) 0px, transparent 50%),
+                radial-gradient(at 85% 15%, rgba(124, 58, 237, 0.24) 0px, transparent 50%),
+                radial-gradient(at 50% 85%, rgba(16, 185, 129, 0.16) 0px, transparent 50%);
+        }
+        .card-hover {
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+            will-change: transform;
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            .card-hover:hover {
+                transform: translate3d(0, -6px, 0);
+                box-shadow: 0 20px 30px -10px rgba(15, 23, 42, 0.12);
+            }
+            .wa-float-btn:hover .wa-float-tooltip {
+                opacity: 1;
+                transform: translate3d(0, -50%, 0) scale(1);
+                pointer-events: auto;
+            }
+            .wa-float-btn:hover {
+                transform: translate3d(0, -3px, 0) scale(1.06);
+            }
+        }
+
+        .ai-glow {
+            box-shadow: 0 0 25px -3px rgba(245, 158, 11, 0.45);
+        }
+
+        /* Single-Tab View Router Styles */
+        .page-view {
+            display: none;
+        }
+        .page-view.active-view {
+            display: block;
+        }
+        .nav-link.active-nav {
+            color: #2563eb;
+            background-color: rgba(37, 99, 235, 0.1);
+        }
+
+        /* Horizontal Right-to-Left Scrolling Marquee */
+        .partners-marquee-viewport {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            mask-image: linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
+        }
+        .partners-marquee-track {
+            display: flex;
+            width: max-content;
+            gap: 0.65rem;
+            animation: scrollRightToLeft var(--marquee-duration) linear infinite;
+            will-change: transform;
+            transform: translate3d(0, 0, 0);
+        }
+        @media (min-width: 640px) {
+            .partners-marquee-track { gap: 1rem; }
+        }
+        .partners-marquee-viewport:hover .partners-marquee-track,
+        .partners-marquee-track.paused {
+            animation-play-state: paused;
+        }
+        @keyframes scrollRightToLeft {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
+        }
+
+        /* Floating WhatsApp Bubble */
+        .wa-float-wrapper {
+            position: fixed;
+            bottom: calc(22px + var(--safe-bottom));
+            right: calc(22px + var(--safe-right));
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+        }
+        .wa-float-btn {
+            position: relative;
+            width: 52px;
+            height: 52px;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px -4px rgba(37, 211, 102, 0.55), 0 4px 10px -2px rgba(0, 0, 0, 0.25);
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+        }
+        .wa-pulse-ring {
+            position: absolute;
+            inset: -4px;
+            border-radius: 9999px;
+            border: 2px solid #25D366;
+            animation: waPulse 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            pointer-events: none;
+        }
+        @keyframes waPulse {
+            0% { transform: scale(0.95); opacity: 0.85; }
+            75%, 100% { transform: scale(1.38); opacity: 0; }
+        }
+        .wa-float-tooltip {
+            position: absolute;
+            right: 64px;
+            top: 50%;
+            transform: translate3d(8px, -50%, 0) scale(0.95);
+            opacity: 0;
+            pointer-events: none;
+            white-space: nowrap;
+            background: #0f172a;
+            color: #f8fafc;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 7px 13px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.45);
+            border: 1px solid rgba(148, 163, 184, 0.22);
+            transition: all 0.22s ease;
+        }
+        @media (max-width: 768px) {
+            .wa-float-wrapper { bottom: calc(16px + var(--safe-bottom)); right: calc(16px + var(--safe-right)); }
+            .wa-float-btn { width: 48px; height: 48px; }
+            .wa-float-tooltip { display: none !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-blue-600 selection:text-white">
+
+    <!-- REUSABLE OFFICIAL TICA CIRCULAR LOGO SVG DEFINITION -->
+    <svg width="0" height="0" class="hidden" aria-hidden="true">
+        <defs>
+            <linearGradient id="ticaBlueGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#0b65e5" />
+                <stop offset="100%" stop-color="#00368c" />
+            </linearGradient>
+            <linearGradient id="ticaOrangeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#ffb703" />
+                <stop offset="50%" stop-color="#fb8500" />
+                <stop offset="100%" stop-color="#e85d04" />
+            </linearGradient>
+            <symbol id="tica-official-logo" viewBox="0 0 500 500">
+                <circle cx="250" cy="250" r="240" fill="#ffffff" stroke="#0043a4" stroke-width="12" />
+                <circle cx="250" cy="250" r="228" fill="none" stroke="#e2e8f0" stroke-width="1.5" />
+                <g transform="translate(200, 56)">
+                    <polygon points="0,28 52,5 104,28 52,50" fill="url(#ticaBlueGrad)" />
+                    <path d="M24,42 L24,62 Q52,76 80,62 L80,42 L52,54 Z" fill="#00368c" />
+                    <line x1="94" y1="32" x2="94" y2="55" stroke="#00368c" stroke-width="4" stroke-linecap="round" />
+                    <circle cx="94" cy="57" r="4.5" fill="#00368c" />
+                    <path d="M90,60 L98,60 L101,82 L87,82 Z" fill="#00368c" />
+                </g>
+                <path d="M74,122 H178 V152 H143 V232 H109 V152 H74 Z" fill="url(#ticaBlueGrad)" />
+                <rect x="186" y="122" width="34" height="114" rx="2" fill="url(#ticaOrangeGrad)" />
+                <path d="M312,135 C295,120 264,119 246,135 C228,151 226,188 244,210 C261,231 294,232 314,215 L302,190 C289,200 270,199 262,186 C255,174 256,156 268,148 C279,140 293,142 303,152 Z" fill="url(#ticaBlueGrad)" />
+                <path d="M342,122 H374 L416,232 H382 L374,209 H341 L333,232 H301 Z" fill="url(#ticaBlueGrad)" />
+                <polygon points="357,156 342,196 373,196" fill="url(#ticaOrangeGrad)" />
+                <path d="M104,158 C50,192 64,234 152,222 C225,212 292,182 325,155 C284,180 215,202 150,206 C88,209 78,182 104,158 Z" fill="url(#ticaOrangeGrad)" />
+                <path d="M386,154 C408,160 412,174 394,185" fill="none" stroke="url(#ticaOrangeGrad)" stroke-width="6" stroke-linecap="round" />
+                <path d="M84,258 Q166,216 250,262 Q334,216 416,258 Q334,234 250,274 Q166,234 84,258 Z" fill="#0b65e5" />
+                <path d="M72,276 Q162,236 250,282 Q338,236 428,276 Q338,254 250,292 Q162,254 72,276 Z" fill="#00368c" />
+                <g transform="translate(362, 182)">
+                    <rect x="10" y="0" width="66" height="44" rx="5" fill="#ffffff" stroke="#0043a4" stroke-width="5" />
+                    <polygon points="34,12 37,33 43,27 50,35 55,31 48,23 55,19" fill="#00368c" />
+                    <polygon points="0,46 86,46 96,56 -10,56" fill="#0043a4" />
+                    <rect x="33" y="49" width="20" height="3" rx="1" fill="#ffffff" />
+                    <rect x="64" y="-16" width="12" height="12" fill="#0b65e5" />
+                    <rect x="80" y="-26" width="14" height="14" fill="#0096c7" />
+                    <rect x="82" y="-7" width="11" height="11" fill="#00368c" />
+                    <rect x="68" y="2" width="9" height="9" fill="#38bdf8" />
+                </g>
+                <text x="250" y="348" text-anchor="middle" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-weight="900" font-size="68" fill="#003f9e" letter-spacing="3">TARANG</text>
+                <polygon points="151,334 143,348 159,348" fill="#fb8500" />
+                <polygon points="279,334 271,348 287,348" fill="#fb8500" />
+                <line x1="78" y1="376" x2="128" y2="376" stroke="#fb8500" stroke-width="6" stroke-linecap="round" />
+                <text x="250" y="387" text-anchor="middle" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-weight="800" font-size="31" fill="#003f9e" letter-spacing="2">INSTITUTE OF</text>
+                <line x1="372" y1="376" x2="422" y2="376" stroke="#fb8500" stroke-width="6" stroke-linecap="round" />
+                <text x="250" y="422" text-anchor="middle" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-weight="800" font-size="30" fill="#003f9e" letter-spacing="1.5">COMPUTER ACADEMY</text>
+            </symbol>
+        </defs>
+    </svg>
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-slate-950 text-slate-300 text-xs sm:text-sm py-2.5 px-4 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2 sm:gap-4 flex-wrap">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                    <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+                    NEW LAUNCH
+                </span>
+                <span class="font-medium text-white">Learn AI Tools &amp; Work Smarter — Admissions Open!</span>
+            </div>
+            <div class="flex items-center gap-4 ml-auto">
+                <a href="tel:8249283653" class="hover:text-amber-400 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-phone-volume text-blue-400"></i>
+                    <span class="font-semibold">8249283653</span>
+                </a>
+                <a href="tel:7894567610" class="hidden sm:flex hover:text-amber-400 transition items-center gap-1.5">
+                    <span class="text-slate-700">/</span>
+                    <span class="font-semibold">7894567610</span>
+                </a>
+                <span class="hidden md:inline text-slate-700">|</span>
+                <span class="hidden md:flex items-center gap-1.5 text-slate-400">
+                    <i class="fa-solid fa-location-dot text-emerald-400"></i>
+                    Near SBI, Main road, dengausta, Ganjam
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sticky Navigation Header -->
+    <header class="sticky top-0 z-50 glass-nav border-b border-slate-200/80 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <a href="#home" onclick="switchPage('home')" class="flex items-center gap-3 sm:gap-3.5 group focus:outline-none">
+                    <div class="w-14 h-14 rounded-full bg-white p-0.5 shadow-md shadow-blue-600/15 border border-blue-200 group-hover:scale-105 transition shrink-0 flex items-center justify-center overflow-hidden">
+                        <img src="https://drive.google.com/thumbnail?id=1X5TeaxkqvZdlrTQYGQ9hQjEi_vgAXcjf&sz=w800"
+                             data-drive-url="https://drive.google.com/file/d/1X5TeaxkqvZdlrTQYGQ9hQjEi_vgAXcjf/view?usp=drive_link"
+                             referrerpolicy="no-referrer"
+                             alt="TICA Official Logo"
+                             onerror="handleDriveImgError(this, '1X5TeaxkqvZdlrTQYGQ9hQjEi_vgAXcjf')"
+                             class="w-full h-full object-contain rounded-full" />
+                        <svg class="w-full h-full hidden" aria-label="TICA Official Logo">
+                            <use href="#tica-official-logo"></use>
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="block font-display font-extrabold text-sm sm:text-base md:text-lg lg:text-xl text-slate-900 tracking-tight leading-tight">
+                            TARANG INSTITUTE
+                        </span>
+                        <span class="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-blue-600">
+                            Of Computer Academy
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation Links (Same Tab Switcher) -->
+                <nav class="hidden xl:flex items-center gap-1">
+                    <button onclick="switchPage('home')" data-page="home" class="nav-link active-nav px-3.5 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50/80 transition">Home</button>
+                    <button onclick="switchPage('courses')" data-page="courses" class="nav-link px-3.5 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50/80 transition">Computer Courses</button>
+                    <button onclick="switchPage('counseling')" data-page="counseling" class="nav-link px-3.5 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50/80 transition">Career Counseling</button>
+                    <button onclick="switchPage('services')" data-page="services" class="nav-link px-3.5 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50/80 transition">IT Services</button>
+                    <button onclick="switchPage('team')" data-page="team" class="nav-link px-3.5 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50/80 transition">Our Team</button>
+                    <button onclick="switchPage('contact')" data-page="contact" class="nav-link px-3.5 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50/80 transition">Contact &amp; Map</button>
+                </nav>
+
+                <div class="hidden sm:flex items-center gap-2.5">
+                    <a href="https://forms.gle/ZeGhMY4ceeWKDbCTA" target="_self"
+                       class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 transition flex items-center gap-1.5">
+                        <i class="fa-regular fa-circle-question"></i>
+                        <span>Enquiry</span>
+                    </a>
+                    <a href="https://forms.gle/XAnzoqHw6EJHx5Kq8" target="_self"
+                       class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-md shadow-blue-600/25 transition flex items-center gap-2">
+                        <span>Admission Form</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </a>
+                </div>
+
+                <button id="mobileMenuBtn" aria-label="Toggle Menu" class="xl:hidden p-2.5 rounded-xl text-slate-700 hover:bg-slate-100 focus:outline-none">
+                    <i id="mobileMenuIcon" class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Drawer -->
+        <div id="mobileMenu" class="hidden xl:hidden bg-white border-b border-slate-200 px-4 pt-3 pb-6 space-y-2 shadow-xl">
+            <div class="grid grid-cols-2 gap-2 pb-2">
+                <button onclick="switchPage('home')" class="mobile-nav-link text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600">Home</button>
+                <button onclick="switchPage('courses')" class="mobile-nav-link text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600">Computer Courses</button>
+                <button onclick="switchPage('counseling')" class="mobile-nav-link text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600">Career Counseling</button>
+                <button onclick="switchPage('services')" class="mobile-nav-link text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600">IT Services</button>
+                <button onclick="switchPage('team')" class="mobile-nav-link text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600">Our Team</button>
+                <button onclick="switchPage('contact')" class="mobile-nav-link text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600">Contact &amp; Map</button>
+            </div>
+            <div class="pt-3 border-t border-slate-100 flex flex-col gap-2.5">
+                <a href="https://forms.gle/XAnzoqHw6EJHx5Kq8" target="_self"
+                   class="w-full py-3 rounded-xl text-center text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 shadow-md">
+                    <i class="fa-solid fa-user-check mr-1.5"></i> TICA Course Registration &amp; Admission Form
+                </a>
+                <div class="grid grid-cols-2 gap-2">
+                    <a href="https://forms.gle/ZeGhMY4ceeWKDbCTA" target="_self"
+                       class="py-2.5 rounded-xl text-center text-xs font-bold text-blue-700 bg-blue-50 border border-blue-200">
+                        Course Enquiry Form
+                    </a>
+                    <a href="https://forms.gle/Vp5h39rPH1MDA1k4A" target="_self"
+                       class="py-2.5 rounded-xl text-center text-xs font-bold text-purple-700 bg-purple-50 border border-purple-200">
+                        Career Counseling Form
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- SINGLE-TAB VIEW CONTAINER -->
+    <main class="min-h-screen">
+
+        <!-- VIEW 1: HOME (Simpler Introduction & Overview) -->
+        <div id="view-home" class="page-view active-view">
+            <!-- HERO SECTION -->
+            <section class="hero-mesh text-white relative overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-28">
+                <div class="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)] opacity-35 pointer-events-none"></div>
+
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div class="grid lg:grid-cols-12 gap-12 items-center">
+                        <div class="lg:col-span-7 space-y-6">
+                            <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-400/30 text-blue-300 text-xs sm:text-sm font-semibold">
+                                <i class="fa-solid fa-graduation-cap text-blue-400"></i>
+                                <span>Premier Computer Education &amp; Career Hub in Dengausta, Ganjam</span>
+                            </div>
+
+                            <h1 class="font-display font-extrabold text-3xl sm:text-5xl lg:text-6xl tracking-tight leading-[1.12]">
+                                Empowering Your Digital Future at
+                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-indigo-400">
+                                    TARANG INSTITUTE OF COMPUTER ACADEMY
+                                </span>
+                            </h1>
+
+                            <p class="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl">
+                                Welcome to TICA! We offer industry-ready computer diplomas (<strong class="text-white">OS-CIT, CCA, DCA, PGDCA</strong>), university certifications (<strong class="text-white">CV Raman University</strong> &amp; <strong class="text-white">Berhampur University</strong>), NIELIT courses, programming, AI productivity literacy, higher education career counseling, and professional IT services.
+                            </p>
+
+                            <!-- New Course Launch Feature Banner -->
+                            <div class="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-500/20 via-orange-500/15 to-amber-500/10 border border-amber-400/40 ai-glow flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                                <div class="flex items-center gap-3.5">
+                                    <div class="w-12 h-12 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center text-xl font-bold shrink-0 shadow-lg">
+                                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-[11px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded bg-amber-400 text-slate-950">New Course Launch!</span>
+                                        </div>
+                                        <h2 class="font-display font-bold text-lg sm:text-xl text-white mt-0.5">Learn AI Tools &amp; Work Smarter</h2>
+                                        <p class="text-xs sm:text-sm text-amber-200/90">Boost office productivity, automation, content creation &amp; smart workflows</p>
+                                    </div>
+                                </div>
+                                <button onclick="switchPage('courses')" class="px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs sm:text-sm transition shrink-0 shadow-md">
+                                    Explore Courses <i class="fa-solid fa-arrow-right ml-1"></i>
+                                </button>
+                            </div>
+
+                            <!-- Quick Action Buttons -->
+                            <div class="pt-2">
+                                <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+                                    <i class="fa-solid fa-bolt text-amber-400"></i> Quick Navigation &amp; Admission:
+                                </p>
+                                <div class="grid sm:grid-cols-3 gap-3">
+                                    <button onclick="switchPage('courses')" class="group p-3.5 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 hover:from-blue-500 hover:to-indigo-600 text-white shadow-lg shadow-blue-600/30 border border-blue-400/30 transition text-left flex flex-col justify-between">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center text-sm"><i class="fa-solid fa-laptop-code"></i></span>
+                                            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/20">Catalog</span>
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-sm leading-snug">Browse Computer Courses</div>
+                                            <div class="text-[11px] text-blue-100 mt-1 flex items-center gap-1">OS-CIT, PGDCA &amp; More <i class="fa-solid fa-arrow-right text-[10px]"></i></div>
+                                        </div>
+                                    </button>
+
+                                    <button onclick="switchPage('counseling')" class="group p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 text-white border border-slate-700 hover:border-purple-400/50 transition text-left flex flex-col justify-between">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center text-sm"><i class="fa-solid fa-user-graduate"></i></span>
+                                            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300">Degrees</span>
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-sm leading-snug">Career Counseling &amp; Higher Ed</div>
+                                            <div class="text-[11px] text-slate-400 mt-1 flex items-center gap-1">BCA, BBA, MCA, B.Ed <i class="fa-solid fa-arrow-right text-[10px]"></i></div>
+                                        </div>
+                                    </button>
+
+                                    <button onclick="switchPage('services')" class="group p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 text-white border border-slate-700 hover:border-cyan-400/50 transition text-left flex flex-col justify-between">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm"><i class="fa-solid fa-screwdriver-wrench"></i></span>
+                                            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300">IT Care</span>
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-sm leading-snug">Complete IT Services</div>
+                                            <div class="text-[11px] text-slate-400 mt-1 flex items-center gap-1">OS, Printer &amp; Backup <i class="fa-solid fa-arrow-right text-[10px]"></i></div>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Welcome Showcase Card -->
+                        <div class="lg:col-span-5">
+                            <div class="relative rounded-3xl bg-slate-900/90 border border-slate-700/80 p-6 sm:p-7 shadow-2xl backdrop-blur-xl space-y-5">
+                                <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-11 h-11 rounded-full bg-white p-0.5 shadow-md shrink-0 overflow-hidden flex items-center justify-center">
+                                            <img src="https://drive.google.com/thumbnail?id=1X5TeaxkqvZdlrTQYGQ9hQjEi_vgAXcjf&sz=w800"
+                                                 data-drive-url="https://drive.google.com/file/d/1X5TeaxkqvZdlrTQYGQ9hQjEi_vgAXcjf/view?usp=drive_link"
+                                                 referrerpolicy="no-referrer"
+                                                 alt="TICA Logo"
+                                                 onerror="handleDriveImgError(this, '1X5TeaxkqvZdlrTQYGQ9hQjEi_vgAXcjf')"
+                                                 class="w-full h-full object-contain rounded-full" />
+                                            <svg class="w-full h-full hidden" aria-label="TICA Official Logo">
+                                                <use href="#tica-official-logo"></use>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <span class="block text-xs sm:text-sm font-extrabold text-white tracking-tight">TICA Academic &amp; IT Hub</span>
+                                            <span class="block text-[11px] text-blue-300 font-medium">Dengausta, Ganjam, Odisha</span>
+                                        </div>
+                                    </div>
+                                    <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                                        Verified Center
+                                    </span>
+                                </div>
+
+                                <div class="space-y-3">
+                                    <div class="p-4 rounded-2xl bg-slate-800/70 border border-slate-700/70">
+                                        <h3 class="font-bold text-white text-sm">Welcome to TICA</h3>
+                                        <p class="text-xs text-slate-300 mt-1">We provide professional computer education, university PGDCA certification, and technical services under the ownership of <strong class="text-white">Saroj Kumar Bishoyi</strong>.</p>
+                                    </div>
+                                    <div class="p-4 rounded-2xl bg-slate-800/70 border border-slate-700/70">
+                                        <h3 class="font-bold text-white text-sm">Our Core Pillars</h3>
+                                        <p class="text-xs text-slate-300 mt-1">OS-CIT, CCA, DCA, PGDCA, University Degrees (BCA, BBA, MCA, MBA), and expert hardware/software support.</p>
+                                    </div>
+                                </div>
+
+                                <div class="pt-2 flex items-center justify-between gap-3">
+                                    <button onclick="switchPage('team')" class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition">
+                                        <i class="fa-solid fa-users mr-1"></i> Meet Our Faculty &amp; Team
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- QUICK STATS BAR -->
+            <section class="relative z-20 -mt-10 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pb-16">
+                <div class="bg-white rounded-2xl sm:rounded-3xl shadow-xl border border-slate-200/90 p-3 sm:p-6 lg:p-7 grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+                    <div class="bg-slate-50/90 border border-slate-200/80 rounded-xl p-2.5 sm:p-4 flex flex-col justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-blue-100/80 text-blue-600 flex items-center justify-center text-sm sm:text-base font-bold shrink-0">
+                                <i class="fa-solid fa-laptop-file"></i>
+                            </div>
+                            <span class="font-display font-extrabold text-lg sm:text-2xl text-blue-600 leading-none">16+</span>
+                        </div>
+                        <div class="mt-2">
+                            <div class="font-display font-extrabold text-[13px] sm:text-base text-slate-900">Courses</div>
+                            <div class="text-[10px] sm:text-xs text-slate-500 font-medium mt-0.5">OS-CIT, NIELIT &amp; Diplomas</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50/90 border border-slate-200/80 rounded-xl p-2.5 sm:p-4 flex flex-col justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-indigo-100/80 text-indigo-600 flex items-center justify-center text-sm sm:text-base font-bold shrink-0">
+                                <i class="fa-solid fa-building-columns"></i>
+                            </div>
+                            <span class="font-display font-extrabold text-lg sm:text-2xl text-indigo-600 leading-none">2</span>
+                        </div>
+                        <div class="mt-2">
+                            <div class="font-display font-extrabold text-[13px] sm:text-base text-slate-900">Universities</div>
+                            <div class="text-[10px] sm:text-xs text-slate-500 font-medium mt-0.5">CV Raman &amp; Berhampur</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50/90 border border-slate-200/80 rounded-xl p-2.5 sm:p-4 flex flex-col justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-purple-100/80 text-purple-600 flex items-center justify-center text-sm sm:text-base font-bold shrink-0">
+                                <i class="fa-solid fa-user-graduate"></i>
+                            </div>
+                            <span class="font-display font-extrabold text-lg sm:text-2xl text-purple-600 leading-none">8+</span>
+                        </div>
+                        <div class="mt-2">
+                            <div class="font-display font-extrabold text-[13px] sm:text-base text-slate-900">Degrees</div>
+                            <div class="text-[10px] sm:text-xs text-slate-500 font-medium mt-0.5">Career Counseling Tracks</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50/90 border border-slate-200/80 rounded-xl p-2.5 sm:p-4 flex flex-col justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-emerald-100/80 text-emerald-600 flex items-center justify-center text-sm sm:text-base font-bold shrink-0">
+                                <i class="fa-solid fa-microchip"></i>
+                            </div>
+                            <span class="font-display font-extrabold text-lg sm:text-2xl text-emerald-600 leading-none">5</span>
+                        </div>
+                        <div class="mt-2">
+                            <div class="font-display font-extrabold text-[13px] sm:text-base text-slate-900">Pro IT Services</div>
+                            <div class="text-[10px] sm:text-xs text-slate-500 font-medium mt-0.5">PC, OS &amp; Printer Repair</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- VIEW 2: COMPUTER COURSES -->
+        <div id="view-courses" class="page-view">
+            <section class="py-16 lg:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider bg-blue-100 text-blue-700">
+                        <i class="fa-solid fa-code"></i> Industry-Aligned Curriculum
+                    </span>
+                    <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-slate-900 mt-3">
+                        Explore Our Computer Courses
+                    </h2>
+                    <p class="text-slate-600 mt-3 text-base sm:text-lg">
+                        From OS-CIT, foundational diplomas, and University PGDCA programs to NIELIT certifications, programming languages, and next-gen AI tools.
+                    </p>
+                </div>
+
+                <!-- University PGDCA Banner -->
+                <div class="mb-10 rounded-3xl bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white p-6 sm:p-8 shadow-xl border border-blue-700/40">
+                    <div class="grid lg:grid-cols-12 gap-6 items-center">
+                        <div class="lg:col-span-7 space-y-2">
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-200 text-xs font-bold uppercase tracking-wider">
+                                <i class="fa-solid fa-certificate text-amber-400"></i> Recognized University PGDCA Tracks
+                            </div>
+                            <h3 class="font-display font-extrabold text-2xl sm:text-3xl">
+                                University PGDCA Certification Programs
+                            </h3>
+                            <p class="text-slate-300 text-sm sm:text-base">
+                                Get authentic, career-advancing Post Graduate Diploma in Computer Application (PGDCA) certifications recognized for government &amp; private sector jobs.
+                            </p>
+                        </div>
+                        <div class="lg:col-span-5 grid sm:grid-cols-2 gap-4">
+                            <div class="p-4 rounded-2xl bg-white/10 backdrop-blur border border-white/15 flex flex-col justify-between">
+                                <div>
+                                    <span class="text-[11px] font-bold uppercase tracking-wider text-amber-300">University Track 01</span>
+                                    <h4 class="font-display font-bold text-lg text-white mt-1">CV Raman University</h4>
+                                    <p class="text-xs text-slate-300 mt-1">University PGDCA Programme with complete practical lab training.</p>
+                                </div>
+                                <a href="https://forms.gle/ZeGhMY4ceeWKDbCTA" target="_self"
+                                   class="mt-4 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-white text-slate-900 hover:bg-blue-50 text-xs font-bold transition">
+                                    Enquire Now <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-white/10 backdrop-blur border border-white/15 flex flex-col justify-between">
+                                <div>
+                                    <span class="text-[11px] font-bold uppercase tracking-wider text-cyan-300">University Track 02</span>
+                                    <h4 class="font-display font-bold text-lg text-white mt-1">Berhampur University</h4>
+                                    <p class="text-xs text-slate-300 mt-1">University PGDCA Programme tailored for Odisha state &amp; national careers.</p>
+                                </div>
+                                <a href="https://forms.gle/ZeGhMY4ceeWKDbCTA" target="_self"
+                                   class="mt-4 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-white text-slate-900 hover:bg-blue-50 text-xs font-bold transition">
+                                    Enquire Now <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filter Tabs & Search -->
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
+                    <div class="flex flex-wrap items-center justify-center gap-2" id="courseFilterButtons">
+                        <button data-filter="all" class="course-tab active-tab px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition bg-blue-600 text-white shadow-md shadow-blue-600/20">
+                            All Courses (16)
+                        </button>
+                        <button data-filter="diploma" class="course-tab px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition bg-white text-slate-700 hover:bg-slate-100 border border-slate-200">
+                            Computer &amp; Diploma (7)
+                        </button>
+                        <button data-filter="nielit" class="course-tab px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition bg-white text-slate-700 hover:bg-slate-100 border border-slate-200">
+                            NIELIT Courses (3)
+                        </button>
+                        <button data-filter="special" class="course-tab px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition bg-white text-slate-700 hover:bg-slate-100 border border-slate-200">
+                            Special &amp; AI Courses (6)
+                        </button>
+                    </div>
+
+                    <div class="relative w-full md:w-72">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                        <input id="courseSearchInput" type="text" placeholder="Search OS-CIT, PGDCA, Python, Tally..."
+                               class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+
+                <div id="coursesGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </section>
+        </div>
+
+        <!-- VIEW 3: CAREER COUNSELING -->
+        <div id="view-counseling" class="page-view">
+            <section class="py-16 lg:py-24 bg-slate-900 text-white relative overflow-hidden">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
+                        <div class="max-w-2xl">
+                            <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                                <i class="fa-solid fa-user-graduate"></i> Higher Education &amp; Degree Guidance
+                            </span>
+                            <h2 class="font-display font-extrabold text-3xl sm:text-4xl mt-3">
+                                Career Counseling Courses
+                            </h2>
+                            <p class="text-slate-300 mt-3 text-base sm:text-lg">
+                                Confused about what to study after 10+2 or Graduation? Get personalized admission counseling, university selection, and documentation support for top professional degree programs.
+                            </p>
+                        </div>
+                        <div class="shrink-0">
+                            <a href="https://forms.gle/Vp5h39rPH1MDA1k4A" target="_self"
+                               class="inline-flex items-center gap-2.5 px-6 py-4 rounded-2xl font-bold text-sm sm:text-base bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-xl shadow-purple-600/30 transition">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span>Fill Career Counseling Inquiry Form</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                        <div class="card-hover p-6 rounded-2xl bg-slate-800/80 border border-slate-700/80 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-300 flex items-center justify-center text-xl font-bold"><i class="fa-solid fa-briefcase"></i></span>
+                                    <span class="text-xs font-bold uppercase px-2.5 py-1 rounded-full bg-slate-700 text-slate-300">Management</span>
+                                </div>
+                                <h3 class="font-display font-extrabold text-xl text-white">BBA</h3>
+                                <p class="text-xs font-semibold text-purple-300 mt-0.5">Bachelor of Business Administration</p>
+                                <p class="text-xs text-slate-400 mt-3 leading-relaxed">
+                                    Build strong foundations in corporate management, marketing, finance, HR, and entrepreneurship right after 10+2.
+                                </p>
+                            </div>
+                            <a href="https://forms.gle/Vp5h39rPH1MDA1k4A" target="_self"
+                               class="mt-5 w-full py-2.5 px-4 rounded-xl bg-purple-600/20 hover:bg-purple-600 text-purple-200 hover:text-white border border-purple-500/30 text-xs font-bold text-center transition flex items-center justify-center gap-1.5">
+                                <span>Inquire for BBA</span> <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+
+                        <div class="card-hover p-6 rounded-2xl bg-slate-800/80 border border-slate-700/80 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="w-12 h-12 rounded-xl bg-blue-500/20 text-blue-300 flex items-center justify-center text-xl font-bold"><i class="fa-solid fa-laptop-code"></i></span>
+                                    <span class="text-xs font-bold uppercase px-2.5 py-1 rounded-full bg-slate-700 text-slate-300">IT &amp; Software</span>
+                                </div>
+                                <h3 class="font-display font-extrabold text-xl text-white">BCA</h3>
+                                <p class="text-xs font-semibold text-blue-300 mt-0.5">Bachelor of Computer Applications</p>
+                                <p class="text-xs text-slate-400 mt-3 leading-relaxed">
+                                    3-year undergraduate degree focused on software engineering, databases, networking, and modern application development.
+                                </p>
+                            </div>
+                            <a href="https://forms.gle/Vp5h39rPH1MDA1k4A" target="_self"
+                               class="mt-5 w-full py-2.5 px-4 rounded-xl bg-blue-600/20 hover:bg-blue-600 text-blue-200 hover:text-white border border-blue-500/30 text-xs font-bold text-center transition flex items-center justify-center gap-1.5">
+                                <span>Inquire for BCA</span> <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+
+                        <div class="card-hover p-6 rounded-2xl bg-slate-800/80 border border-slate-700/80 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="w-12 h-12 rounded-xl bg-cyan-500/20 text-cyan-300 flex items-center justify-center text-xl font-bold"><i class="fa-solid fa-server"></i></span>
+                                    <span class="text-xs font-bold uppercase px-2.5 py-1 rounded-full bg-slate-700 text-slate-300">Post Graduate IT</span>
+                                </div>
+                                <h3 class="font-display font-extrabold text-xl text-white">MCA</h3>
+                                <p class="text-xs font-semibold text-cyan-300 mt-0.5">Master of Computer Applications</p>
+                                <p class="text-xs text-slate-400 mt-3 leading-relaxed">
+                                    Advanced master's program for high-growth software architecture, full-stack systems, cloud computing, and AI roles.
+                                </p>
+                            </div>
+                            <a href="https://forms.gle/Vp5h39rPH1MDA1k4A" target="_self"
+                               class="mt-5 w-full py-2.5 px-4 rounded-xl bg-cyan-600/20 hover:bg-cyan-600 text-cyan-200 hover:text-white border border-cyan-500/30 text-xs font-bold text-center transition flex items-center justify-center gap-1.5">
+                                <span>Inquire for MCA</span> <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+
+                        <div class="card-hover p-6 rounded-2xl bg-slate-800/80 border border-slate-700/80 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-300 flex items-center justify-center text-xl font-bold"><i class="fa-solid fa-chart-line"></i></span>
+                                    <span class="text-xs font-bold uppercase px-2.5 py-1 rounded-full bg-slate-700 text-slate-300">Executive PG</span>
+                                </div>
+                                <h3 class="font-display font-extrabold text-xl text-white">MBA</h3>
+                                <p class="text-xs font-semibold text-amber-300 mt-0.5">Master of Business Administration</p>
+                                <p class="text-xs text-slate-400 mt-3 leading-relaxed">
+                                    Accelerate into leadership positions with specialized MBA tracks in Finance, Marketing, HR, Operations &amp; IT Management.
+                                </p>
+                            </div>
+                            <a href="https://forms.gle/Vp5h39rPH1MDA1k4A" target="_self"
+                               class="mt-5 w-full py-2.5 px-4 rounded-xl bg-amber-500/20 hover:bg-amber-500 text-amber-200 hover:text-slate-950 border border-amber-500/30 text-xs font-bold text-center transition flex items-center justify-center gap-1.5">
+                                <span>Inquire for MBA</span> <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+
+                        <div class="card-hover p-6 rounded-2xl bg-slate-800/80 border border-slate-700/80 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="w-12 h-12 rounded-xl bg-indigo-500/20 text-indigo-300 flex items-center justify-center text-xl font-bold"><i class="fa-solid fa-gears"></i></span>
+                                    <span class="text-xs font-bold uppercase px-2.5 py-1 rounded-full bg-slate-700 text-slate-300">Engineering</span>
+                                </div>
+                                <h3 class="font-display font-extrabold text-xl text-white">B-Tech</h3>
+                                <p class="text-xs font-semibold text-indigo-300 mt-0.5">Bachelor of Technology</p>
+                                <p class="text-xs text-slate-400 mt-3 leading-relaxed">
+                                    Admission guidance for Computer Science, Mechanical, Civil, Electrical &amp; Electronics Engineering (Regular &amp; Lateral Entry).
+                                </p>
+                            </div>
+                            <a href="https://forms.gle/Vp5h39rPH1MDA1k4A" target="_self"
+                               class="mt-5 w-full py-2.5 px-4 rounded-xl bg-indigo-600/20 hover:bg-indigo-600 text-indigo-200 hover:text-white border border-indigo-500/30 text-xs font-bold text-center transition flex items-center justify-center gap-1.5">
+                                <span>Inquire for B-Tech</span> <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+
+                        <div class="card-hover p-6 rounded-2xl bg-slate-800/80 border border-slate-700/80 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-xl font-bold"><i class="fa-solid fa-chalkboard-user"></i></span>
+                                    <span class="text-xs font-bold uppercase px-2.5 py-1 rounded-full bg-slate-700 text-slate-300">Teaching</span>
+                                </div>
+                                <h3 class="font-display font-extrabold text-xl text-white">B.Ed</h3>
+                                <p class="text-xs font-semibold text-emerald-300 mt-0.5">Bachelor of Education</p>
+                                <p class="text-xs text-slate-400 mt-3 leading-relaxed">
+                                    Complete admission &amp; university counseling for aspiring school teachers aiming for government &amp; private teaching careers.
+                                </p>
+                            </div>
+                            <a href="https://forms.gle/Vp5h39rPH1MDA1k4A" target="_self"
+                               class="mt-5 w-full py-2.5 px-4 rounded-xl bg-emerald-600/20 hover:bg-emerald-600 text-emerald-200 hover:text-white border border-emerald-500/30 text-xs font-bold text-center transition flex items-center justify-center gap-1.5">
+                                <span>Inquire for B.Ed</span> <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+
+                        <div class="card-hover p-6 rounded-2xl bg-slate-800/80 border border-slate-700/80 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="w-12 h-12 rounded-xl bg-orange-500/20 text-orange-300 flex items-center justify-center text-xl font-bold"><i class="fa-solid fa-person-running"></i></span>
+                                    <span class="text-xs font-bold uppercase px-2.5 py-1 rounded-full bg-slate-700 text-slate-300">Physical Ed.</span>
+                                </div>
+                                <h3 class="font-display font-extrabold text-xl text-white">BP.Ed</h3>
+                                <p class="text-xs font-semibold text-orange-300 mt-0.5">Bachelor of Physical Education</p>
+                                <p class="text-xs text-slate-400 mt-3 leading-relaxed">
+                                    Specialized counseling for physical education, sports coaching, and PET teacher qualification in schools and institutions.
+                                </p>
+                            </div>
+                            <a href="https://forms.gle/Vp5h39rPH1MDA1k4A" target="_self"
+                               class="mt-5 w-full py-2.5 px-4 rounded-xl bg-orange-600/20 hover:bg-orange-600 text-orange-200 hover:text-white border border-orange-500/30 text-xs font-bold text-center transition flex items-center justify-center gap-1.5">
+                                <span>Inquire for BP.Ed</span> <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+
+                        <div class="card-hover p-6 rounded-2xl bg-slate-800/80 border border-slate-700/80 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="w-12 h-12 rounded-xl bg-rose-500/20 text-rose-300 flex items-center justify-center text-xl font-bold"><i class="fa-solid fa-user-nurse"></i></span>
+                                    <span class="text-xs font-bold uppercase px-2.5 py-1 rounded-full bg-slate-700 text-slate-300">Healthcare</span>
+                                </div>
+                                <h3 class="font-display font-extrabold text-xl text-white">BSc. Nursing</h3>
+                                <p class="text-xs font-semibold text-rose-300 mt-0.5">Bachelor of Science in Nursing</p>
+                                <p class="text-xs text-slate-400 mt-3 leading-relaxed">
+                                    Dedicated admission guidance for BSc. Nursing in reputed nursing colleges with clinical hospital training &amp; placement scope.
+                                </p>
+                            </div>
+                            <a href="https://forms.gle/Vp5h39rPH1MDA1k4A" target="_self"
+                               class="mt-5 w-full py-2.5 px-4 rounded-xl bg-rose-600/20 hover:bg-rose-600 text-rose-200 hover:text-white border border-rose-500/30 text-xs font-bold text-center transition flex items-center justify-center gap-1.5">
+                                <span>Inquire for Nursing</span> <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- VIEW 4: IT SERVICES -->
+        <div id="view-services" class="page-view">
+            <section class="py-16 lg:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-14">
+                    <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider bg-emerald-100 text-emerald-700">
+                        <i class="fa-solid fa-screwdriver-wrench"></i> Reliable Technical Support
+                    </span>
+                    <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-slate-900 mt-3">
+                        Our Computer &amp; IT Services
+                    </h2>
+                    <p class="text-slate-600 mt-3 text-base sm:text-lg">
+                        Fast, secure, and affordable computer maintenance, software installation, and hardware networking solutions in Dengausta, Ganjam.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="card-hover bg-white rounded-3xl p-7 border border-slate-200 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-2xl mb-5"><i class="fa-brands fa-windows"></i></div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-blue-600">System Care</span>
+                            <h3 class="font-display font-bold text-xl text-slate-900 mt-1">OS &amp; System Formatting (with Data Backup)</h3>
+                            <p class="text-sm text-slate-600 mt-2.5 leading-relaxed">
+                                Clean installation of Windows 10/11 or Linux with 100% safe backup of your important documents, photos, and Tally data before formatting.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
+                            <a href="https://forms.gle/ZeGhMY4ceeWKDbCTA" target="_self" class="text-xs font-bold text-slate-600 hover:text-blue-600 transition flex items-center gap-1.5">
+                                <i class="fa-regular fa-file-lines text-blue-600"></i> Enquire Online
+                            </a>
+                            <a href="https://api.whatsapp.com/send/?phone=8249283653&text=Hello%20TICA,%20I%20need%20OS%20%26%20System%20Formatting%20with%20Data%20Backup%20service.&type=phone_number&app_absent=0"
+                               target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-xl bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white text-xs font-bold transition">
+                                <i class="fa-brands fa-whatsapp mr-1"></i> WhatsApp
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card-hover bg-white rounded-3xl p-7 border border-slate-200 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl mb-5"><i class="fa-solid fa-cubes"></i></div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Software Setup</span>
+                            <h3 class="font-display font-bold text-xl text-slate-900 mt-1">MS Office &amp; Software Installation</h3>
+                            <p class="text-sm text-slate-600 mt-2.5 leading-relaxed">
+                                Complete setup of Microsoft Office (Word, Excel, PowerPoint), Tally Prime, Adobe Photoshop, programming IDEs, drivers, and essential utilities.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
+                            <a href="https://forms.gle/ZeGhMY4ceeWKDbCTA" target="_self" class="text-xs font-bold text-slate-600 hover:text-indigo-600 transition flex items-center gap-1.5">
+                                <i class="fa-regular fa-file-lines text-indigo-600"></i> Enquire Online
+                            </a>
+                            <a href="https://api.whatsapp.com/send/?phone=8249283653&text=Hello%20TICA,%20I%20need%20MS%20Office%20%26%20Software%20Installation%20service.&type=phone_number&app_absent=0"
+                               target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-xl bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white text-xs font-bold transition">
+                                <i class="fa-brands fa-whatsapp mr-1"></i> WhatsApp
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card-hover bg-white rounded-3xl p-7 border border-slate-200 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-5"><i class="fa-solid fa-shield-halved"></i></div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-emerald-600">Cyber Security</span>
+                            <h3 class="font-display font-bold text-xl text-slate-900 mt-1">Antivirus &amp; Malware Protection</h3>
+                            <p class="text-sm text-slate-600 mt-2.5 leading-relaxed">
+                                Deep virus removal, ransomware protection, licensed antivirus installation, and system speed optimization to keep your PC safe.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
+                            <a href="https://forms.gle/ZeGhMY4ceeWKDbCTA" target="_self" class="text-xs font-bold text-slate-600 hover:text-emerald-600 transition flex items-center gap-1.5">
+                                <i class="fa-regular fa-file-lines text-emerald-600"></i> Enquire Online
+                            </a>
+                            <a href="https://api.whatsapp.com/send/?phone=8249283653&text=Hello%20TICA,%20I%20need%20Antivirus%20%26%20Malware%20Protection%20service.&type=phone_number&app_absent=0"
+                               target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-xl bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white text-xs font-bold transition">
+                                <i class="fa-brands fa-whatsapp mr-1"></i> WhatsApp
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card-hover bg-white rounded-3xl p-7 border border-slate-200 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl mb-5"><i class="fa-solid fa-key"></i></div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-amber-600">Access Recovery</span>
+                            <h3 class="font-display font-bold text-xl text-slate-900 mt-1">Windows &amp; Account Password Recovery</h3>
+                            <p class="text-sm text-slate-600 mt-2.5 leading-relaxed">
+                                Locked out of your laptop or desktop PC? We safely recover or reset forgotten Windows login and user account passwords without losing your files.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
+                            <a href="https://forms.gle/ZeGhMY4ceeWKDbCTA" target="_self" class="text-xs font-bold text-slate-600 hover:text-amber-600 transition flex items-center gap-1.5">
+                                <i class="fa-regular fa-file-lines text-amber-600"></i> Enquire Online
+                            </a>
+                            <a href="https://api.whatsapp.com/send/?phone=8249283653&text=Hello%20TICA,%20I%20need%20Windows%20%26%20Account%20Password%20Recovery%20service.&type=phone_number&app_absent=0"
+                               target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-xl bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white text-xs font-bold transition">
+                                <i class="fa-brands fa-whatsapp mr-1"></i> WhatsApp
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card-hover bg-white rounded-3xl p-7 border border-slate-200 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="w-14 h-14 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-2xl mb-5"><i class="fa-solid fa-print"></i></div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-purple-600">Hardware &amp; LAN</span>
+                            <h3 class="font-display font-bold text-xl text-slate-900 mt-1">Printer Repair &amp; Network Setup</h3>
+                            <p class="text-sm text-slate-600 mt-2.5 leading-relaxed">
+                                Complete troubleshooting, driver configuration, and repair for inkjet/laser printers along with office Wi-Fi router and LAN network setup.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
+                            <a href="https://forms.gle/ZeGhMY4ceeWKDbCTA" target="_self" class="text-xs font-bold text-slate-600 hover:text-purple-600 transition flex items-center gap-1.5">
+                                <i class="fa-regular fa-file-lines text-purple-600"></i> Enquire Online
+                            </a>
+                            <a href="https://api.whatsapp.com/send/?phone=8249283653&text=Hello%20TICA,%20I%20need%20Printer%20Repair%20%26%20Network%20Setup%20service.&type=phone_number&app_absent=0"
+                               target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-xl bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white text-xs font-bold transition">
+                                <i class="fa-brands fa-whatsapp mr-1"></i> WhatsApp
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="rounded-3xl p-7 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white flex flex-col justify-between shadow-lg">
+                        <div>
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-blue-500/20 text-blue-300 border border-blue-400/30">Instant Tech Help</span>
+                            <h3 class="font-display font-bold text-2xl mt-4">Need Urgent Computer Assistance?</h3>
+                            <p class="text-sm text-slate-300 mt-2 leading-relaxed">
+                                Visit our center at Near SBI, Main road, dengausta or connect with our technical support desk online for quick diagnostics and service booking.
+                            </p>
+                        </div>
+                        <div class="mt-6 space-y-2.5">
+                            <a href="https://forms.gle/ZeGhMY4ceeWKDbCTA" target="_self"
+                               class="w-full py-3 px-4 rounded-xl bg-white text-slate-900 hover:bg-blue-50 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition">
+                                <i class="fa-solid fa-file-pen text-blue-600"></i> Online Service Enquiry
+                            </a>
+                            <a href="https://api.whatsapp.com/send/?phone=8249283653&text&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer"
+                               class="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition">
+                                <i class="fa-brands fa-whatsapp text-base"></i> WhatsApp Support Desk
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- VIEW 5: OUR TEAM -->
+        <div id="view-team" class="page-view">
+            <section class="py-16 lg:py-24 bg-white border-t border-slate-200/80">
+                <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+                    <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+                        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] sm:text-xs font-extrabold uppercase tracking-wider bg-indigo-100 text-indigo-700">
+                            <i class="fa-solid fa-users-gear"></i> Visionary Leadership, Coordinators &amp; Faculty
+                        </span>
+                        <h2 class="font-display font-extrabold text-2xl sm:text-4xl text-slate-900 mt-2.5">
+                            Meet the Team Behind TICA
+                        </h2>
+                        <p class="text-slate-600 mt-2 text-xs sm:text-base">
+                            Dedicated leadership, institute coordinators, and passionate instructors committed to delivering high-quality computer education at Near SBI, Main road, dengausta, Ganjam.
+                        </p>
+                    </div>
+
+                    <!-- Owner Feature Card -->
+                    <div class="max-w-xl mx-auto mb-12">
+                        <div class="rounded-2xl bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white p-4 sm:p-6 shadow-xl border border-blue-500/30 relative overflow-hidden">
+                            <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 text-center sm:text-left">
+                                <div class="relative shrink-0">
+                                    <div class="w-28 h-28 sm:w-36 sm:h-36 aspect-square rounded-xl bg-slate-800 p-1 flex items-center justify-center shadow-xl border-2 border-amber-400/80 overflow-hidden">
+                                        <img src="https://drive.google.com/thumbnail?id=1J2YdkDD-Y9T_9R96y8xJA4UI0qKtsTxp&sz=w800"
+                                             data-drive-url="https://drive.google.com/file/d/1J2YdkDD-Y9T_9R96y8xJA4UI0qKtsTxp/view?usp=drive_link"
+                                             referrerpolicy="no-referrer"
+                                             alt="SAROJ KUMAR BISHOYI - Owner"
+                                             onerror="handleDriveImgError(this, '1J2YdkDD-Y9T_9R96y8xJA4UI0qKtsTxp')"
+                                             class="w-full h-full object-cover object-top rounded-lg" />
+                                        <div class="hidden w-full h-full rounded-lg bg-gradient-to-br from-blue-600 to-indigo-800 text-white font-display font-extrabold text-2xl flex items-center justify-center">SKB</div>
+                                    </div>
+                                    <div class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg bg-white p-0.5 shadow-lg border border-blue-300 absolute -bottom-1.5 -right-1.5 overflow-hidden flex items-center justify-center">
+                                        <img src="https://drive.google.com/thumbnail?id=1X5TeaxkqvZdlrTQYGQ9hQjEi_vgAXcjf&sz=w800"
+                                             data-drive-url="https://drive.google.com/file/d/1X5TeaxkqvZdlrTQYGQ9hQjEi_vgAXcjf/view?usp=drive_link"
+                                             referrerpolicy="no-referrer"
+                                             alt="TICA Badge"
+                                             onerror="handleDriveImgError(this, '1X5TeaxkqvZdlrTQYGQ9hQjEi_vgAXcjf')"
+                                             class="w-full h-full object-contain rounded-md" />
+                                        <svg class="w-full h-full hidden" aria-label="TICA Official Logo"><use href="#tica-official-logo"></use></svg>
+                                    </div>
+                                </div>
+                                <div class="space-y-1.5 min-w-0">
+                                    <div class="flex flex-wrap items-center justify-center sm:justify-start gap-1.5">
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider bg-amber-400 text-slate-950"><i class="fa-solid fa-crown"></i> Founder &amp; Owner</span>
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/20 text-blue-200 border border-blue-400/30">Institutional Head</span>
+                                    </div>
+                                    <h3 class="font-display font-extrabold text-lg sm:text-2xl tracking-tight text-white">SAROJ KUMAR BISHOYI</h3>
+                                    <p class="text-blue-200 text-xs sm:text-sm font-semibold">Owner — TARANG INSTITUTE OF COMPUTER ACADEMY (TICA)</p>
+                                    <p class="text-[11px] sm:text-xs text-slate-300 leading-relaxed pt-0.5">
+                                        Leading TICA to empower students across Dengausta and Ganjam with OS-CIT, practical computer diplomas, University PGDCA &amp; NIELIT courses, AI literacy, and career counseling.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Coordinators Marquee -->
+                    <div class="mb-12 sm:mb-16">
+                        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                <span class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-blue-600 text-white flex items-center justify-center text-xs sm:text-sm shadow-sm shrink-0"><i class="fa-solid fa-user-tie"></i></span>
+                                <div class="min-w-0">
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        <h3 class="font-display font-extrabold text-base sm:text-2xl text-slate-900">Our Esteemed Coordinators</h3>
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-blue-50 text-blue-600 border border-blue-200"><i class="fa-solid fa-arrows-left-right text-[8px]"></i> Live Scroll</span>
+                                    </div>
+                                    <p class="text-[11px] sm:text-xs text-slate-500 truncate">Dedicated coordinators driving academic &amp; lab excellence</p>
+                                </div>
+                            </div>
+                            <button id="toggleMarqueeBtn" type="button" class="px-2.5 py-1.5 rounded-lg text-[11px] font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition flex items-center gap-1.5 shrink-0">
+                                <i id="toggleMarqueeIcon" class="fa-solid fa-pause text-[9px] text-blue-600"></i>
+                                <span id="toggleMarqueeText">Pause Scroll</span>
+                            </button>
+                        </div>
+
+                        <div class="partners-marquee-viewport py-2">
+                            <div id="partnersMarqueeTrack" class="partners-marquee-track">
+                                <!-- Card 1 -->
+                                <div class="w-[162px] sm:w-[210px] md:w-[230px] shrink-0 card-hover bg-white p-2 sm:p-3 rounded-xl border border-slate-200 hover:border-blue-500 shadow-sm flex flex-col justify-between">
+                                    <div>
+                                        <div class="w-full aspect-square rounded-lg bg-blue-50 text-blue-700 font-display font-extrabold text-xl flex items-center justify-center border border-slate-200 overflow-hidden relative">
+                                            <img src="https://drive.google.com/thumbnail?id=1HFqszblQ65wJo504txoik_utoOX4sjoT&sz=w800" data-drive-url="https://drive.google.com/file/d/1HFqszblQ65wJo504txoik_utoOX4sjoT/view?usp=drive_link" referrerpolicy="no-referrer" alt="S PRINCE ACHARY" onerror="handleDriveImgError(this, '1HFqszblQ65wJo504txoik_utoOX4sjoT')" class="w-full h-full object-cover object-top" />
+                                            <span class="hidden w-full h-full flex items-center justify-center">SPA</span>
+                                            <span class="absolute top-1.5 left-1.5 inline-flex items-center gap-1 text-[8px] sm:text-[9px] font-extrabold uppercase tracking-wider px-1.5 py-0.5 rounded bg-slate-900/85 text-white backdrop-blur-sm"><i class="fa-solid fa-microchip text-blue-400"></i> Coordinator</span>
+                                        </div>
+                                        <div class="mt-2">
+                                            <h4 class="font-display font-extrabold text-[12px] sm:text-[14px] text-slate-900 leading-tight truncate">S PRINCE ACHARY</h4>
+                                            <p class="text-[10px] sm:text-[11px] font-bold text-blue-600 mt-0.5 leading-tight truncate">Managing &amp; Tech Coordinator</p>
+                                            <p class="text-[10px] sm:text-[11px] text-slate-600 mt-1 leading-snug line-clamp-3">Leads technical operations, modern AI tools training, web initiatives, and IT hardware/software support at TICA.</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 pt-1.5 border-t border-slate-100 flex flex-wrap gap-1">
+                                        <span class="px-1.5 py-0.5 rounded text-[8.5px] sm:text-[9.5px] font-bold bg-blue-50 text-blue-700">AI &amp; Web</span>
+                                        <span class="px-1.5 py-0.5 rounded text-[8.5px] sm:text-[9.5px] font-bold bg-slate-100 text-slate-700">IT Lead</span>
+                                    </div>
+                                </div>
+                                <!-- Card 2 -->
+                                <div class="w-[162px] sm:w-[210px] md:w-[230px] shrink-0 card-hover bg-white p-2 sm:p-3 rounded-xl border border-slate-200 hover:border-indigo-500 shadow-sm flex flex-col justify-between">
+                                    <div>
+                                        <div class="w-full aspect-square rounded-lg bg-indigo-50 text-indigo-700 font-display font-extrabold text-xl flex items-center justify-center border border-slate-200 overflow-hidden relative">
+                                            <img src="https://drive.google.com/thumbnail?id=1mFEI_8mtJACHU26PNHVJBYTyZPehG9fs&sz=w800" data-drive-url="https://drive.google.com/file/d/1mFEI_8mtJACHU26PNHVJBYTyZPehG9fs/view?usp=sharing" referrerpolicy="no-referrer" alt="NARESH BEHRA" onerror="handleDriveImgError(this, '1mFEI_8mtJACHU26PNHVJBYTyZPehG9fs')" class="w-full h-full object-cover object-top" />
+                                            <span class="hidden w-full h-full flex items-center justify-center">NB</span>
+                                            <span class="absolute top-1.5 left-1.5 inline-flex items-center gap-1 text-[8px] sm:text-[9px] font-extrabold uppercase tracking-wider px-1.5 py-0.5 rounded bg-slate-900/85 text-white backdrop-blur-sm"><i class="fa-solid fa-graduation-cap text-indigo-400"></i> Coordinator</span>
+                                        </div>
+                                        <div class="mt-2">
+                                            <h4 class="font-display font-extrabold text-[12px] sm:text-[14px] text-slate-900 leading-tight truncate">NARESH BEHRA</h4>
+                                            <p class="text-[10px] sm:text-[11px] font-bold text-indigo-600 mt-0.5 leading-tight truncate">Academic &amp; Admissions</p>
+                                            <p class="text-[10px] sm:text-[11px] text-slate-600 mt-1 leading-snug line-clamp-3">Oversees academic scheduling, student admission workflows, and diploma coordination for OS-CIT, DCA, PGDCA.</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 pt-1.5 border-t border-slate-100 flex flex-wrap gap-1">
+                                        <span class="px-1.5 py-0.5 rounded text-[8.5px] sm:text-[9.5px] font-bold bg-indigo-50 text-indigo-700">Admissions</span>
+                                        <span class="px-1.5 py-0.5 rounded text-[8.5px] sm:text-[9.5px] font-bold bg-slate-100 text-slate-700">PGDCA</span>
+                                    </div>
+                                </div>
+                                <!-- Card 3 -->
+                                <div class="w-[162px] sm:w-[210px] md:w-[230px] shrink-0 card-hover bg-white p-2 sm:p-3 rounded-xl border border-slate-200 hover:border-purple-500 shadow-sm flex flex-col justify-between">
+                                    <div>
+                                        <div class="w-full aspect-square rounded-lg bg-purple-50 text-purple-700 font-display font-extrabold text-xl flex items-center justify-center border border-slate-200 overflow-hidden relative">
+                                            <img src="https://drive.google.com/thumbnail?id=1SEwu2j5TJxFSdF7dcTWa7NOx1iS-tVsj&sz=w800" data-drive-url="https://drive.google.com/file/d/1SEwu2j5TJxFSdF7dcTWa7NOx1iS-tVsj/view?usp=sharing" referrerpolicy="no-referrer" alt="KRISHNA SHAU" onerror="handleDriveImgError(this, '1SEwu2j5TJxFSdF7dcTWa7NOx1iS-tVsj')" class="w-full h-full object-cover object-top" />
+                                            <span class="hidden w-full h-full flex items-center justify-center">KS</span>
+                                            <span class="absolute top-1.5 left-1.5 inline-flex items-center gap-1 text-[8px] sm:text-[9px] font-extrabold uppercase tracking-wider px-1.5 py-0.5 rounded bg-slate-900/85 text-white backdrop-blur-sm"><i class="fa-solid fa-users text-purple-400"></i> Coordinator</span>
+                                        </div>
+                                        <div class="mt-2">
+                                            <h4 class="font-display font-extrabold text-[12px] sm:text-[14px] text-slate-900 leading-tight truncate">KRISHNA SHAU</h4>
+                                            <p class="text-[10px] sm:text-[11px] font-bold text-purple-600 mt-0.5 leading-tight truncate">Outreach &amp; Guidance</p>
+                                            <p class="text-[10px] sm:text-[11px] text-slate-600 mt-1 leading-snug line-clamp-3">Guides students through course selection, career counseling pathways, and community outreach across Ganjam.</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 pt-1.5 border-t border-slate-100 flex flex-wrap gap-1">
+                                        <span class="px-1.5 py-0.5 rounded text-[8.5px] sm:text-[9.5px] font-bold bg-purple-50 text-purple-700">Guidance</span>
+                                        <span class="px-1.5 py-0.5 rounded text-[8.5px] sm:text-[9.5px] font-bold bg-slate-100 text-slate-700">Outreach</span>
+                                    </div>
+                                </div>
+                                <!-- Card 4 -->
+                                <div class="w-[162px] sm:w-[210px] md:w-[230px] shrink-0 card-hover bg-white p-2 sm:p-3 rounded-xl border border-slate-200 hover:border-emerald-500 shadow-sm flex flex-col justify-between">
+                                    <div>
+                                        <div class="w-full aspect-square rounded-lg bg-emerald-50 text-emerald-700 font-display font-extrabold text-xl flex items-center justify-center border border-slate-200 overflow-hidden relative">
+                                            <img src="https://drive.google.com/thumbnail?id=1f1P_7-cVNOzYu-wpMeEQFncdKTHyvpfD&sz=w800" data-drive-url="https://drive.google.com/file/d/1f1P_7-cVNOzYu-wpMeEQFncdKTHyvpfD/view?usp=drive_link" referrerpolicy="no-referrer" alt="ADARSH PRUSTY" onerror="handleDriveImgError(this, '1f1P_7-cVNOzYu-wpMeEQFncdKTHyvpfD')" class="w-full h-full object-cover object-top" />
+                                            <span class="hidden w-full h-full flex items-center justify-center">AP</span>
+                                            <span class="absolute top-1.5 left-1.5 inline-flex items-center gap-1 text-[8px] sm:text-[9px] font-extrabold uppercase tracking-wider px-1.5 py-0.5 rounded bg-slate-900/85 text-white backdrop-blur-sm"><i class="fa-solid fa-network-wired text-emerald-400"></i> Coordinator</span>
+                                        </div>
+                                        <div class="mt-2">
+                                            <h4 class="font-display font-extrabold text-[12px] sm:text-[14px] text-slate-900 leading-tight truncate">ADARSH PRUSTY</h4>
+                                            <p class="text-[10px] sm:text-[11px] font-bold text-emerald-600 mt-0.5 leading-tight truncate">Lab &amp; Systems Coordinator</p>
+                                            <p class="text-[10px] sm:text-[11px] text-slate-600 mt-1 leading-snug line-clamp-3">Manages computer lab infrastructure, networking, and practical lab readiness for OS-CIT and programming batches.</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 pt-1.5 border-t border-slate-100 flex flex-wrap gap-1">
+                                        <span class="px-1.5 py-0.5 rounded text-[8.5px] sm:text-[9.5px] font-bold bg-emerald-50 text-emerald-700">Lab Systems</span>
+                                        <span class="px-1.5 py-0.5 rounded text-[8.5px] sm:text-[9.5px] font-bold bg-slate-100 text-slate-700">Networking</span>
+                                    </div>
+                                </div>
+                                <!-- Card 5 -->
+                                <div class="w-[162px] sm:w-[210px] md:w-[230px] shrink-0 card-hover bg-white p-2 sm:p-3 rounded-xl border border-slate-200 hover:border-cyan-500 shadow-sm flex flex-col justify-between">
+                                    <div>
+                                        <div class="w-full aspect-square rounded-lg bg-cyan-50 text-cyan-700 font-display font-extrabold text-xl flex items-center justify-center border border-slate-200 overflow-hidden relative">
+                                            <img src="https://drive.google.com/thumbnail?id=1OszP00dgnzr3OHi-jwCI2G9i5cIFBNrG&sz=w800" data-drive-url="https://drive.google.com/file/d/1OszP00dgnzr3OHi-jwCI2G9i5cIFBNrG/view?usp=drive_link" referrerpolicy="no-referrer" alt="ADRASHA BISHOYI" onerror="handleDriveImgError(this, '1OszP00dgnzr3OHi-jwCI2G9i5cIFBNrG')" class="w-full h-full object-cover object-top" />
+                                            <span class="hidden w-full h-full flex items-center justify-center">AB</span>
+                                            <span class="absolute top-1.5 left-1.5 inline-flex items-center gap-1 text-[8px] sm:text-[9px] font-extrabold uppercase tracking-wider px-1.5 py-0.5 rounded bg-slate-900/85 text-white backdrop-blur-sm"><i class="fa-solid fa-compass text-cyan-400"></i> Coordinator</span>
+                                        </div>
+                                        <div class="mt-2">
+                                            <h4 class="font-display font-extrabold text-[12px] sm:text-[14px] text-slate-900 leading-tight truncate">ADRASHA BISHOYI</h4>
+                                            <p class="text-[10px] sm:text-[11px] font-bold text-cyan-600 mt-0.5 leading-tight truncate">Higher Ed &amp; Counseling</p>
+                                            <p class="text-[10px] sm:text-[11px] text-slate-600 mt-1 leading-snug line-clamp-3">Specializes in higher education admissions and career counseling for BBA, BCA, MCA, MBA, B-Tech, B.Ed &amp; Nursing.</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 pt-1.5 border-t border-slate-100 flex flex-wrap gap-1">
+                                        <span class="px-1.5 py-0.5 rounded text-[8.5px] sm:text-[9.5px] font-bold bg-cyan-50 text-cyan-700">Counseling</span>
+                                        <span class="px-1.5 py-0.5 rounded text-[8.5px] sm:text-[9.5px] font-bold bg-slate-100 text-slate-700">Degrees</span>
+                                    </div>
+                                </div>
+                                <!-- Card 6 -->
+                                <div class="w-[162px] sm:w-[210px] md:w-[230px] shrink-0 card-hover bg-white p-2 sm:p-3 rounded-xl border border-slate-200 hover:border-amber-500 shadow-sm flex flex-col justify-between">
+                                    <div>
+                                        <div class="w-full aspect-square rounded-lg bg-amber-50 text-amber-700 font-display font-extrabold text-xl flex items-center justify-center border border-slate-200 overflow-hidden relative">
+                                            <img src="https://drive.google.com/thumbnail?id=1VcQsj0LfB_fn9ZZwmJCRt-BLLvypSV8e&sz=w800" data-drive-url="https://drive.google.com/file/d/1VcQsj0LfB_fn9ZZwmJCRt-BLLvypSV8e/view?usp=drive_link" referrerpolicy="no-referrer" alt="HIMANSHU SAHU" onerror="handleDriveImgError(this, '1VcQsj0LfB_fn9ZZwmJCRt-BLLvypSV8e')" class="w-full h-full object-cover object-top" />
+                                            <span class="hidden w-full h-full flex items-center justify-center">HS</span>
+                                            <span class="absolute top-1.5 left-1.5 inline-flex items-center gap-1 text-[8px] sm:text-[9px] font-extrabold uppercase tracking-wider px-1.5 py-0.5 rounded bg-slate-900/85 text-white backdrop-blur-sm"><i class="fa-solid fa-award text-amber-400"></i> Coordinator</span>
+                                        </div>
+                                        <div class="mt-2">
+                                            <h4 class="font-display font-extrabold text-[12px] sm:text-[14px] text-slate-900 leading-tight truncate">HIMANSHU SAHU</h4>
+                                            <p class="text-[10px] sm:text-[11px] font-bold text-amber-600 mt-0.5 leading-tight truncate">Digital &amp; Exam Coordinator</p>
+                                            <p class="text-[10px] sm:text-[11px] text-slate-600 mt-1 leading-snug line-clamp-3">Coordinates digital registrations, examination support, and certification tracking for NIELIT and University tracks.</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 pt-1.5 border-t border-slate-100 flex flex-wrap gap-1">
+                                        <span class="px-1.5 py-0.5 rounded text-[8.5px] sm:text-[9.5px] font-bold bg-amber-50 text-amber-700">Digital Portal</span>
+                                        <span class="px-1.5 py-0.5 rounded text-[8.5px] sm:text-[9.5px] font-bold bg-slate-100 text-slate-700">Exams</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Faculty Section -->
+                    <div>
+                        <div class="flex items-center gap-2.5 mb-5">
+                            <span class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-emerald-600 text-white flex items-center justify-center text-xs sm:text-sm shadow-sm shrink-0"><i class="fa-solid fa-chalkboard-user"></i></span>
+                            <div class="min-w-0">
+                                <h3 class="font-display font-extrabold text-base sm:text-2xl text-slate-900">Our Dedicated Teachers &amp; Faculty</h3>
+                                <p class="text-[11px] sm:text-xs text-slate-500 truncate">Experienced instructors delivering classroom lessons &amp; practical lab mentorship</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2.5 sm:gap-5 max-w-2xl mx-auto">
+                            <div class="card-hover bg-white p-2.5 sm:p-4 rounded-xl border border-slate-200 hover:border-emerald-500 shadow-sm flex flex-col justify-between min-w-0">
+                                <div>
+                                    <div class="w-full aspect-square rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-display font-extrabold text-2xl flex items-center justify-center overflow-hidden border border-emerald-200 relative">
+                                        <img src="" data-drive-url="" referrerpolicy="no-referrer" alt="SAKTHI" onerror="handleDriveImgError(this, '')" class="w-full h-full object-cover object-top" />
+                                        <span class="hidden w-full h-full flex items-center justify-center">S</span>
+                                        <span class="absolute top-1.5 left-1.5 inline-flex items-center gap-1 text-[8px] sm:text-[9px] font-extrabold uppercase tracking-wider px-1.5 py-0.5 rounded bg-slate-900/85 text-white backdrop-blur-sm"><i class="fa-solid fa-chalkboard-user text-emerald-400"></i> Teacher</span>
+                                    </div>
+                                    <div class="mt-2.5 min-w-0">
+                                        <h4 class="font-display font-extrabold text-[13px] sm:text-base text-slate-900 leading-tight truncate">SAKTHI</h4>
+                                        <p class="text-[10px] sm:text-xs font-bold text-emerald-600 mt-0.5 leading-tight truncate">Programming &amp; NIELIT Faculty</p>
+                                        <p class="text-[10px] sm:text-xs text-slate-600 mt-1.5 leading-snug line-clamp-3">Specializes in C, C++, Python, HTML, and NIELIT ('O' Level, CCC) with hands-on coding logic.</p>
+                                    </div>
+                                </div>
+                                <div class="mt-2.5 pt-2 border-t border-slate-100 flex flex-wrap gap-1">
+                                    <span class="px-1.5 py-0.5 rounded text-[8.5px] sm:text-[10px] font-bold bg-emerald-50 text-emerald-700">Python / C++</span>
+                                    <span class="px-1.5 py-0.5 rounded text-[8.5px] sm:text-[10px] font-bold bg-slate-100 text-slate-700">NIELIT Lab</span>
+                                </div>
+                            </div>
+
+                            <div class="card-hover bg-white p-2.5 sm:p-4 rounded-xl border border-slate-200 hover:border-blue-500 shadow-sm flex flex-col justify-between min-w-0">
+                                <div>
+                                    <div class="w-full aspect-square rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white font-display font-extrabold text-2xl flex items-center justify-center overflow-hidden border border-blue-200 relative">
+                                        <img src="https://drive.google.com/thumbnail?id=1YPdCHvnyFNFdSSa2tRGOwPeCTK21al0r&sz=w800" data-drive-url="https://drive.google.com/file/d/1YPdCHvnyFNFdSSa2tRGOwPeCTK21al0r/view?usp=drive_link" referrerpolicy="no-referrer" alt="GOURI" onerror="handleDriveImgError(this, '1YPdCHvnyFNFdSSa2tRGOwPeCTK21al0r')" class="w-full h-full object-cover object-top" />
+                                        <span class="hidden w-full h-full flex items-center justify-center">G</span>
+                                        <span class="absolute top-1.5 left-1.5 inline-flex items-center gap-1 text-[8px] sm:text-[9px] font-extrabold uppercase tracking-wider px-1.5 py-0.5 rounded bg-slate-900/85 text-white backdrop-blur-sm"><i class="fa-solid fa-chalkboard-user text-blue-400"></i> Teacher</span>
+                                    </div>
+                                    <div class="mt-2.5 min-w-0">
+                                        <h4 class="font-display font-extrabold text-[13px] sm:text-base text-slate-900 leading-tight truncate">GOURI</h4>
+                                        <p class="text-[10px] sm:text-xs font-bold text-blue-600 mt-0.5 leading-tight truncate">OS-CIT, Tally &amp; Design Faculty</p>
+                                        <p class="text-[10px] sm:text-xs text-slate-600 mt-1.5 leading-snug line-clamp-3">Dedicated instructor for OS-CIT, DCA, PGDCA, Tally Prime 7.1 with GST, and Photoshop 7.0 workflows.</p>
+                                    </div>
+                                </div>
+                                <div class="mt-2.5 pt-2 border-t border-slate-100 flex flex-wrap gap-1">
+                                    <span class="px-1.5 py-0.5 rounded text-[8.5px] sm:text-[10px] font-bold bg-blue-50 text-blue-700">OS-CIT / DCA</span>
+                                    <span class="px-1.5 py-0.5 rounded text-[8.5px] sm:text-[10px] font-bold bg-slate-100 text-slate-700">Tally + GST</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- VIEW 6: CONTACT & MAP -->
+        <div id="view-contact" class="page-view">
+            <section class="py-16 lg:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider bg-blue-100 text-blue-700">
+                        <i class="fa-solid fa-map-location-dot"></i> Get in Touch
+                    </span>
+                    <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-slate-900 mt-3">
+                        Contact TARANG INSTITUTE (TICA)
+                    </h2>
+                    <p class="text-slate-600 mt-3 text-base">
+                        Visit our center or reach out via phone, WhatsApp, or email for admissions, counseling, and computer services.
+                    </p>
+                </div>
+
+                <div class="grid lg:grid-cols-12 gap-8 items-start">
+                    <div class="lg:col-span-5 bg-white rounded-3xl p-7 border border-slate-200 shadow-sm space-y-6">
+                        <h3 class="font-display font-extrabold text-xl text-slate-900">Institute Contact Info</h3>
+                        <div class="space-y-4 text-sm text-slate-700">
+                            <div class="flex items-start gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-location-dot"></i></div>
+                                <div>
+                                    <strong class="block text-slate-900">Campus Address</strong>
+                                    <span>Near SBI, Main road, dengausta, Ganjam, Odisha – 761014</span>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-phone"></i></div>
+                                <div>
+                                    <strong class="block text-slate-900">Helpline Numbers</strong>
+                                    <div class="flex flex-wrap gap-2 mt-0.5 font-bold text-blue-600">
+                                        <a href="tel:8249283653" class="hover:underline">8249283653</a> •
+                                        <a href="tel:7894567610" class="hover:underline">7894567610</a> •
+                                        <a href="tel:7978545088" class="hover:underline">7978545088</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-user-tie"></i></div>
+                                <div>
+                                    <strong class="block text-slate-900">Owner &amp; Head</strong>
+                                    <span>Saroj Kumar Bishoyi</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-slate-100">
+                            <a href="https://api.whatsapp.com/send/?phone=8249283653&text&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer"
+                               class="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/25 transition">
+                                <i class="fa-brands fa-whatsapp text-lg"></i> Chat on WhatsApp Now
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7 bg-white rounded-3xl p-4 sm:p-6 border border-slate-200 shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-display font-extrabold text-lg text-slate-900">Campus Location Map</h3>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Near+SBI+Main+road+dengausta+Ganjam+Odisha+761014" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-blue-600 hover:underline">
+                                Open in Google Maps <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </a>
+                        </div>
+                        <div class="rounded-2xl overflow-hidden border border-slate-200 h-[380px]">
+                            <iframe
+                                title="TARANG INSTITUTE OF COMPUTER ACADEMY Map"
+                                src="https://maps.google.com/maps?q=Near%20SBI,%20Main%20road,%20dengausta,%20Ganjam,%20Odisha%20761014&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                                width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 text-slate-300 pt-14 pb-8 border-t border-slate-800/90">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-11 border-b border-slate-800/80 items-start">
+                <div class="lg:col-span-4 space-y-4">
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-12 h-12 rounded-full bg-white p-0.5 flex items-center justify-center shadow-md shrink-0 overflow-hidden">
+                            <img src="https://drive.google.com/thumbnail?id=1X5TeaxkqvZdlrTQYGQ9hQjEi_vgAXcjf&sz=w800" data-drive-url="https://drive.google.com/file/d/1X5TeaxkqvZdlrTQYGQ9hQjEi_vgAXcjf/view?usp=drive_link" referrerpolicy="no-referrer" alt="TICA Footer Logo" onerror="handleDriveImgError(this, '1X5TeaxkqvZdlrTQYGQ9hQjEi_vgAXcjf')" class="w-full h-full object-contain rounded-full" />
+                            <svg class="w-full h-full hidden" aria-label="TICA Logo"><use href="#tica-official-logo"></use></svg>
+                        </div>
+                        <div>
+                            <h3 class="font-display font-extrabold text-base sm:text-lg text-white leading-snug">TARANG INSTITUTE OF COMPUTER ACADEMY</h3>
+                            <p class="text-xs text-blue-400 font-semibold">Dengausta, Ganjam, Odisha – 761014</p>
+                        </div>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                        Premier center for OS-CIT, computer diplomas &amp; University PGDCA courses, NIELIT certifications, AI &amp; coding skills, higher education career counseling, and complete IT services.
+                    </p>
+                    <div class="space-y-2.5 pt-1 text-xs sm:text-sm">
+                        <div class="flex items-start gap-2.5 text-slate-300">
+                            <i class="fa-solid fa-location-dot text-blue-400 mt-1 shrink-0"></i>
+                            <span><strong class="text-white">Address:</strong> Near SBI, Main road, dengausta, Ganjam, Odisha – 761014</span>
+                        </div>
+                        <div class="flex items-start gap-2.5 text-slate-300">
+                            <i class="fa-solid fa-phone text-emerald-400 mt-1 shrink-0"></i>
+                            <div>
+                                <strong class="text-white">Contact Us:</strong>
+                                <div class="flex flex-wrap items-center gap-x-2 gap-y-1 mt-0.5 font-semibold text-slate-200">
+                                    <a href="tel:8249283653" class="hover:text-blue-400 transition">8249283653</a> •
+                                    <a href="tel:7894567610" class="hover:text-blue-400 transition">7894567610</a> •
+                                    <a href="tel:7978545088" class="hover:text-blue-400 transition">7978545088</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-4 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-display font-bold text-white text-xs uppercase tracking-wider mb-3.5 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span> Official Forms</h4>
+                        <ul class="space-y-2.5 text-xs sm:text-sm">
+                            <li><a href="https://forms.gle/ZeGhMY4ceeWKDbCTA" target="_self" class="text-slate-400 hover:text-white transition flex items-center gap-2"><i class="fa-solid fa-arrow-right text-[10px] text-blue-400"></i> Course Enquiry Form</a></li>
+                            <li><a href="https://forms.gle/Vp5h39rPH1MDA1k4A" target="_self" class="text-slate-400 hover:text-white transition flex items-center gap-2"><i class="fa-solid fa-arrow-right text-[10px] text-purple-400"></i> Career Counseling Form</a></li>
+                            <li><a href="https://forms.gle/XAnzoqHw6EJHx5Kq8" target="_self" class="text-slate-400 hover:text-white transition flex items-center gap-2"><i class="fa-solid fa-arrow-right text-[10px] text-emerald-400"></i> Course Admission Form</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-display font-bold text-white text-xs uppercase tracking-wider mb-3.5 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Quick Pages</h4>
+                        <ul class="space-y-2 text-xs sm:text-sm">
+                            <li><button onclick="switchPage('home')" class="text-slate-400 hover:text-white transition">Home Overview</button></li>
+                            <li><button onclick="switchPage('courses')" class="text-slate-400 hover:text-white transition">OS-CIT &amp; Computer Courses</button></li>
+                            <li><button onclick="switchPage('counseling')" class="text-slate-400 hover:text-white transition">Career Counseling</button></li>
+                            <li><button onclick="switchPage('services')" class="text-slate-400 hover:text-white transition">IT Services</button></li>
+                            <li><button onclick="switchPage('team')" class="text-slate-400 hover:text-white transition">Our Team &amp; Faculty</button></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-4 space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-display font-bold text-white text-xs uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-map-location-dot text-blue-400"></i> <span>Campus Location Map</span>
+                        </h4>
+                        <button onclick="switchPage('contact')" class="text-[11px] font-semibold text-blue-400 hover:text-blue-300 transition">View Full Map &rarr;</button>
+                    </div>
+                    <div class="rounded-xl overflow-hidden border border-slate-800 shadow-md bg-slate-900 h-44">
+                        <iframe
+                            title="TICA Map Footer"
+                            src="https://maps.google.com/maps?q=Near%20SBI,%20Main%20road,%20dengausta,%20Ganjam,%20Odisha%20761014&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+                <div class="text-center sm:text-left space-y-0.5">
+                    <p>© <span id="currentYear">2026</span> <strong class="text-slate-200">TARANG INSTITUTE OF COMPUTER ACADEMY (TICA)</strong>. All Rights Reserved.</p>
+                    <p class="text-[11px] text-slate-500">Owner: <strong class="text-slate-300">SAROJ KUMAR BISHOYI</strong> • Near SBI, Main road, dengausta, Ganjam, Odisha – 761014</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <a href="https://www.youtube.com/@tarangcomputer" target="_blank" rel="noopener noreferrer" title="YouTube" class="w-9 h-9 rounded-lg bg-slate-900 hover:bg-red-600 text-slate-400 hover:text-white border border-slate-800 flex items-center justify-center text-sm transition"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="https://www.instagram.com/tarangcomputer/" target="_blank" rel="noopener noreferrer" title="Instagram" class="w-9 h-9 rounded-lg bg-slate-900 hover:bg-pink-600 text-slate-400 hover:text-white border border-slate-800 flex items-center justify-center text-sm transition"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://t.me/Tarangcomputer" target="_blank" rel="noopener noreferrer" title="Telegram" class="w-9 h-9 rounded-lg bg-slate-900 hover:bg-sky-500 text-slate-400 hover:text-white border border-slate-800 flex items-center justify-center text-sm transition"><i class="fa-brands fa-telegram"></i></a>
+                    <a href="https://api.whatsapp.com/send/?phone=8249283653&text&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer" title="WhatsApp" class="w-9 h-9 rounded-lg bg-slate-900 hover:bg-emerald-600 text-slate-400 hover:text-white border border-slate-800 flex items-center justify-center text-sm transition"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- COURSE SYLLABUS MODAL -->
+    <div id="courseModal" class="fixed inset-0 z-50 hidden bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-200 relative">
+            <button id="closeModalBtn" aria-label="Close modal" class="absolute top-5 right-5 w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="modalBadge" class="inline-block px-3 py-1 rounded-full text-xs font-extrabold uppercase bg-blue-100 text-blue-700 mb-3"></div>
+            <h3 id="modalTitle" class="font-display font-extrabold text-2xl text-slate-900"></h3>
+            <p id="modalDesc" class="text-sm text-slate-600 mt-2 leading-relaxed"></p>
+            <div class="mt-5">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2.5">Key Topics &amp; Highlights:</h4>
+                <ul id="modalTopics" class="space-y-2 text-sm text-slate-700"></ul>
+            </div>
+            <div class="mt-7 pt-5 border-t border-slate-100 grid grid-cols-2 gap-3">
+                <a href="https://forms.gle/ZeGhMY4ceeWKDbCTA" target="_self"
+                   class="py-3 px-4 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs sm:text-sm text-center transition">
+                    Course Enquiry
+                </a>
+                <a href="https://forms.gle/XAnzoqHw6EJHx5Kq8" target="_self"
+                   class="py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm text-center shadow-md transition">
+                    Admission Form
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toastNotification" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 hidden px-5 py-3 rounded-2xl bg-slate-900 text-white text-xs sm:text-sm font-semibold shadow-2xl border border-slate-700 flex items-center gap-2.5">
+        <i class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toastMessage">Done!</span>
+    </div>
+
+    <!-- FLOATING WHATSAPP BUBBLE -->
+    <div class="wa-float-wrapper">
+        <a href="https://api.whatsapp.com/send/?phone=8249283653&text&type=phone_number&app_absent=0"
+           target="_blank" rel="noopener noreferrer"
+           aria-label="Chat on WhatsApp"
+           class="wa-float-btn">
+            <span class="wa-pulse-ring"></span>
+            <i class="fa-brands fa-whatsapp text-2xl sm:text-[26px] relative z-10"></i>
+            <span class="wa-float-tooltip">
+                <i class="fa-solid fa-circle text-[8px] text-emerald-400 mr-1.5 align-middle"></i>Chat on WhatsApp • 8249283653
+            </span>
+        </a>
+    </div>
+
+    <!-- APPLICATION JAVASCRIPT -->
+    <script>
+        // Single-Tab View Router
+        window.switchPage = function(pageId) {
+            document.querySelectorAll('.page-view').forEach(view => {
+                view.classList.remove('active-view');
+            });
+            const targetView = document.getElementById('view-' + pageId);
+            if (targetView) {
+                targetView.classList.add('active-view');
+            }
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active-nav');
+                if (link.getAttribute('data-page') === pageId) {
+                    link.classList.add('active-nav');
+                }
+            });
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileMenuIcon = document.getElementById('mobileMenuIcon');
+            if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+                if (mobileMenuIcon) mobileMenuIcon.className = 'fa-solid fa-bars text-xl';
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        // Complete Data for All TICA Computer Courses (including OS-CIT)
+        const coursesData = [
+            {
+                id: 'ai-tools',
+                title: 'Learn AI Tools & Work Smarter',
+                category: 'special',
+                categoryLabel: 'New Course Launch!',
+                featured: true,
+                icon: 'fa-solid fa-wand-magic-sparkles',
+                accent: 'amber',
+                desc: 'Master modern Artificial Intelligence tools for office productivity, smart documentation, presentations, data analysis, and workflow automation.',
+                topics: [
+                    'AI Prompt Engineering for Office & Academics',
+                    'Automated Document, Email & Report Creation',
+                    'Smart Presentations, Spreadsheets & Data Analysis',
+                    'AI Design, Research & Time-Saving Workflows'
+                ]
+            },
+            {
+                id: 'oscit',
+                title: 'OS-CIT (Odisha State Certificate in IT)',
+                category: 'diploma',
+                categoryLabel: 'Diploma & IT Course',
+                featured: false,
+                icon: 'fa-solid fa-laptop-code',
+                accent: 'blue',
+                desc: 'Odisha state-recognized digital literacy & IT certification course covering operating systems, office automation, internet skills, and digital governance.',
+                topics: [
+                    'Computer Fundamentals & Windows OS',
+                    'MS Office (Word, Excel, PowerPoint)',
+                    'Internet Navigation, Email & Digital Services',
+                    'Cyber Safety & Practical Workplace Skills'
+                ]
+            },
+            {
+                id: 'cca',
+                title: 'CCA (Certificate in Computer Application)',
+                category: 'diploma',
+                categoryLabel: 'Computer Course',
+                featured: false,
+                icon: 'fa-solid fa-desktop',
+                accent: 'blue',
+                desc: 'Foundational certification covering computer fundamentals, operating systems, MS Office suite, and safe internet usage.',
+                topics: [
+                    'Computer Fundamentals & Windows OS',
+                    'MS Word, MS Excel & MS PowerPoint',
+                    'Internet Operations, Email & Digital Payments',
+                    'Typing Speed & Practical Office Documentation'
+                ]
+            },
+            {
+                id: 'dca',
+                title: 'DCA (Diploma in Computer Application)',
+                category: 'diploma',
+                categoryLabel: 'Computer Course',
+                featured: false,
+                icon: 'fa-solid fa-laptop-file',
+                accent: 'blue',
+                desc: 'Comprehensive diploma program required for state and central clerical/data-entry jobs and office administration.',
+                topics: [
+                    'Advanced MS Office (Word, Excel, PowerPoint, Access)',
+                    'Operating Systems & File Management',
+                    'Database Basics & Office Automation',
+                    'Internet Technologies & Cyber Hygiene'
+                ]
+            },
+            {
+                id: 'pgdca',
+                title: 'PGDCA (Post Graduate Diploma in Computer Application)',
+                category: 'diploma',
+                categoryLabel: 'Computer Diploma',
+                featured: false,
+                icon: 'fa-solid fa-user-graduate',
+                accent: 'indigo',
+                desc: '1-Year intensive professional diploma covering office automation, programming, databases, accounting software, and web basics.',
+                topics: [
+                    'OS, MS Office & Advanced Spreadsheet Modeling',
+                    'Programming in C / C++ & HTML Web Design',
+                    'RDBMS, SQL & Database Management',
+                    'Tally Accounting & Practical Project Work'
+                ]
+            },
+            {
+                id: 'univ-pgdca-cvraman',
+                title: 'University PGDCA — CV Raman University',
+                category: 'diploma',
+                categoryLabel: 'University PGDCA',
+                featured: false,
+                icon: 'fa-solid fa-building-columns',
+                accent: 'indigo',
+                desc: 'Recognized University PGDCA certification track from CV Raman University with full practical and exam preparation at TICA.',
+                topics: [
+                    'Affiliated University PGDCA Curriculum (CV Raman University)',
+                    'Computer Organization, OS & Office Automation',
+                    'Programming Languages, DBMS & Web Technology',
+                    'Valid for Government & Private Sector Promotions/Jobs'
+                ]
+            },
+            {
+                id: 'univ-pgdca-berhampur',
+                title: 'University PGDCA — Berhampur University',
+                category: 'diploma',
+                categoryLabel: 'University PGDCA',
+                featured: false,
+                icon: 'fa-solid fa-building-columns',
+                accent: 'indigo',
+                desc: 'Recognized University PGDCA certification track from Berhampur University tailored for students across Ganjam and Odisha.',
+                topics: [
+                    'Berhampur University PGDCA Syllabus & Practicals',
+                    'Software Development, Data Structures & DBMS',
+                    'System Analysis, MS Office & Project Dissertation',
+                    'Full Examination & Counseling Support at TICA'
+                ]
+            },
+            {
+                id: 'nielit-ccc',
+                title: 'CCC (Course on Computer Concepts)',
+                category: 'nielit',
+                categoryLabel: 'NIELIT Course',
+                featured: false,
+                icon: 'fa-solid fa-award',
+                accent: 'emerald',
+                desc: 'Government-recognized NIELIT CCC certification equipping students with essential digital literacy and office skills.',
+                topics: [
+                    'Introduction to Computer & GUI Operating Systems',
+                    'Word Processing, Spreadsheets & Presentations',
+                    'Internet, WWW, Web Browsers & Digital Financial Tools',
+                    'FutureSkills & Cyber Security Overview'
+                ]
+            },
+            {
+                id: 'nielit-bcc',
+                title: 'BCC (Basic Computer Course)',
+                category: 'nielit',
+                categoryLabel: 'NIELIT Course',
+                featured: false,
+                icon: 'fa-solid fa-certificate',
+                accent: 'emerald',
+                desc: 'Entry-level NIELIT certification designed to build confidence in everyday computer operations and e-Governance services.',
+                topics: [
+                    'Knowing Your Computer & Operating System Basics',
+                    'Creating Documents & Spreadsheets',
+                    'Introduction to Internet & Communication',
+                    'Using Online Citizen & e-Governance Services'
+                ]
+            },
+            {
+                id: 'nielit-olevel',
+                title: "NIELIT 'O' Level Course",
+                category: 'nielit',
+                categoryLabel: 'NIELIT Course',
+                featured: false,
+                icon: 'fa-solid fa-medal',
+                accent: 'emerald',
+                desc: "Foundation-level professional IT course by NIELIT equivalent to a foundation diploma in computer applications.",
+                topics: [
+                    'IT Tools and Network Basics',
+                    'Web Designing & Publishing (HTML, CSS, JS)',
+                    'Programming and Problem Solving through Python',
+                    'Internet of Things (IoT) & Practical Project'
+                ]
+            },
+            {
+                id: 'c-prog',
+                title: 'C Programming',
+                category: 'special',
+                categoryLabel: 'Special Course',
+                featured: false,
+                icon: 'fa-solid fa-code',
+                accent: 'cyan',
+                desc: 'Build rock-solid logic and algorithmic thinking with structured programming in C language.',
+                topics: [
+                    'Variables, Data Types, Operators & Control Loops',
+                    'Functions, Recursion & Array Manipulation',
+                    'Pointers, Structures & Dynamic Memory',
+                    'File Handling & Hands-on Coding Lab'
+                ]
+            },
+            {
+                id: 'cpp-prog',
+                title: 'C++ Programming',
+                category: 'special',
+                categoryLabel: 'Special Course',
+                featured: false,
+                icon: 'fa-solid fa-laptop-code',
+                accent: 'cyan',
+                desc: 'Master Object-Oriented Programming (OOP) concepts with C++ for college academics and software interviews.',
+                topics: [
+                    'Classes, Objects, Constructors & Destructors',
+                    'Inheritance, Polymorphism & Encapsulation',
+                    'Operator Overloading & Templates (STL)',
+                    'Exception Handling & Mini Projects'
+                ]
+            },
+            {
+                id: 'python-prog',
+                title: 'Python Programming',
+                category: 'special',
+                categoryLabel: 'Special Course',
+                featured: false,
+                icon: 'fa-brands fa-python',
+                accent: 'cyan',
+                desc: 'Learn the world’s most popular language for automation, backend development, data science, and AI applications.',
+                topics: [
+                    'Python Syntax, Lists, Tuples, Sets & Dictionaries',
+                    'Functions, Modules & Object-Oriented Python',
+                    'File Handling, Exception Handling & Libraries',
+                    'Practical Automation Scripts & Mini Projects'
+                ]
+            },
+            {
+                id: 'html-web',
+                title: 'HTML Web Designing',
+                category: 'special',
+                categoryLabel: 'Special Course',
+                featured: false,
+                icon: 'fa-brands fa-html5',
+                accent: 'cyan',
+                desc: 'Design clean, semantic web pages from scratch using modern HTML5 elements, forms, tables, and media tags.',
+                topics: [
+                    'HTML5 Document Structure & Semantic Tags',
+                    'Forms, Input Validation, Tables & Lists',
+                    'Embedding Images, Audio, Video & Hyperlinks',
+                    'Building & Publishing Multi-Page Websites'
+                ]
+            },
+            {
+                id: 'tally-prime',
+                title: 'Tally Prime 7.1 with GST',
+                category: 'special',
+                categoryLabel: 'Special Course',
+                featured: false,
+                icon: 'fa-solid fa-calculator',
+                accent: 'purple',
+                desc: 'Become job-ready in computerized accounting, inventory management, billing, and complete GST return preparation.',
+                topics: [
+                    'Company Creation, Ledgers & Accounting Vouchers',
+                    'Inventory Management, Godowns & Batch Billing',
+                    'Complete GST Setup (CGST, SGST, IGST) & e-Invoicing',
+                    'Balance Sheet, P&L Reports, TDS & Data Backup'
+                ]
+            },
+            {
+                id: 'photoshop',
+                title: 'Adobe Photoshop 7.0',
+                category: 'special',
+                categoryLabel: 'Special Course',
+                featured: false,
+                icon: 'fa-solid fa-palette',
+                accent: 'purple',
+                desc: 'Practical graphic designing, photo retouching, passport photo creation, flex/banner design, and studio workflows.',
+                topics: [
+                    'Layers, Selections, Masking & Color Correction',
+                    'Photo Retouching, Background Removal & Studio Editing',
+                    'Passport Photo Actions, Banners, Posters & ID Cards',
+                    'Print-Ready Exporting & Typography Design'
+                ]
+            }
+        ];
+
+        const coursesGrid = document.getElementById('coursesGrid');
+        const filterButtons = document.querySelectorAll('.course-tab');
+        const searchInput = document.getElementById('courseSearchInput');
+        let currentCategory = 'all';
+
+        function renderCourses() {
+            if (!coursesGrid) return;
+            const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
+            const filtered = coursesData.filter(course => {
+                const matchesCategory = currentCategory === 'all' || course.category === currentCategory;
+                const matchesSearch = course.title.toLowerCase().includes(query) ||
+                                      course.desc.toLowerCase().includes(query) ||
+                                      course.categoryLabel.toLowerCase().includes(query) ||
+                                      course.topics.some(t => t.toLowerCase().includes(query));
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                coursesGrid.innerHTML = `
+                    <div class="col-span-full bg-white rounded-3xl p-10 text-center border border-slate-200">
+                        <i class="fa-solid fa-magnifying-glass text-3xl text-slate-400 mb-3"></i>
+                        <h3 class="font-display font-bold text-lg text-slate-800">No matching courses found</h3>
+                        <p class="text-sm text-slate-500 mt-1">Try searching for OS-CIT, PGDCA, CCC, Python, Tally, or AI.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            coursesGrid.innerHTML = filtered.map(course => {
+                const isFeatured = course.featured;
+                return `
+                    <div class="card-hover rounded-3xl p-6 flex flex-col justify-between ${isFeatured ? 'bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white border-2 border-amber-400/70 ai-glow' : 'bg-white text-slate-800 border border-slate-200 shadow-sm'}">
+                        <div>
+                            <div class="flex items-center justify-between gap-2 mb-4">
+                                <div class="w-12 h-12 rounded-2xl ${isFeatured ? 'bg-amber-400 text-slate-950' : 'bg-blue-50 text-blue-600'} flex items-center justify-center text-xl font-bold">
+                                    <i class="${course.icon}"></i>
+                                </div>
+                                <span class="px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider ${isFeatured ? 'bg-amber-400 text-slate-950 animate-pulse' : 'bg-slate-100 text-slate-700'}">
+                                    ${course.categoryLabel}
+                                </span>
+                            </div>
+
+                            <h3 class="font-display font-extrabold text-xl ${isFeatured ? 'text-white' : 'text-slate-900'} leading-snug">
+                                ${course.title}
+                            </h3>
+                            <p class="text-xs sm:text-sm ${isFeatured ? 'text-slate-300' : 'text-slate-600'} mt-2 leading-relaxed">
+                                ${course.desc}
+                            </p>
+
+                            <ul class="mt-4 space-y-1.5 text-xs ${isFeatured ? 'text-amber-100/90' : 'text-slate-600'}">
+                                ${course.topics.slice(0, 3).map(topic => `
+                                    <li class="flex items-start gap-2">
+                                        <i class="fa-solid fa-check ${isFeatured ? 'text-amber-400' : 'text-blue-600'} mt-0.5"></i>
+                                        <span>${topic}</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+
+                        <div class="mt-6 pt-4 border-t ${isFeatured ? 'border-slate-800' : 'border-slate-100'} space-y-2">
+                            <div class="grid grid-cols-2 gap-2">
+                                <a href="https://forms.gle/ZeGhMY4ceeWKDbCTA" target="_self"
+                                   class="py-2.5 px-3 rounded-xl text-xs font-bold text-center transition ${isFeatured ? 'bg-white/10 hover:bg-white/20 text-white border border-white/15' : 'bg-blue-50 hover:bg-blue-100 text-blue-700'}">
+                                    Course Enquiry
+                                </a>
+                                <a href="https://forms.gle/XAnzoqHw6EJHx5Kq8" target="_self"
+                                   class="py-2.5 px-3 rounded-xl text-xs font-bold text-center transition ${isFeatured ? 'bg-amber-400 hover:bg-amber-300 text-slate-950' : 'bg-blue-600 hover:bg-blue-700 text-white'}">
+                                    Admission Form
+                                </a>
+                            </div>
+                            <button onclick="openCourseModal('${course.id}')"
+                                    class="w-full py-2 rounded-xl text-xs font-semibold ${isFeatured ? 'text-amber-300 hover:bg-white/5' : 'text-slate-500 hover:bg-slate-50'} transition flex items-center justify-center gap-1">
+                                <i class="fa-regular fa-eye"></i> View Complete Syllabus Highlights
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterButtons.forEach(b => {
+                    b.classList.remove('bg-blue-600', 'text-white', 'shadow-md', 'shadow-blue-600/20');
+                    b.classList.add('bg-white', 'text-slate-700', 'border', 'border-slate-200');
+                });
+                btn.classList.remove('bg-white', 'text-slate-700', 'border', 'border-slate-200');
+                btn.classList.add('bg-blue-600', 'text-white', 'shadow-md', 'shadow-blue-600/20');
+                currentCategory = btn.getAttribute('data-filter');
+                renderCourses();
+            });
+        });
+
+        if (searchInput) {
+            searchInput.addEventListener('input', renderCourses);
+        }
+
+        const courseModal = document.getElementById('courseModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        window.openCourseModal = function(courseId) {
+            const course = coursesData.find(c => c.id === courseId);
+            if (!course || !courseModal) return;
+            document.getElementById('modalBadge').textContent = course.categoryLabel;
+            document.getElementById('modalTitle').textContent = course.title;
+            document.getElementById('modalDesc').textContent = course.desc;
+            document.getElementById('modalTopics').innerHTML = course.topics.map(t => `
+                <li class="flex items-start gap-2.5">
+                    <i class="fa-solid fa-circle-check text-blue-600 mt-1"></i>
+                    <span>${t}</span>
+                </li>
+            `).join('');
+            courseModal.classList.remove('hidden');
+        };
+
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', () => courseModal.classList.add('hidden'));
+        }
+        if (courseModal) {
+            courseModal.addEventListener('click', (e) => {
+                if (e.target === courseModal) courseModal.classList.add('hidden');
+            });
+        }
+
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuIcon = document.getElementById('mobileMenuIcon');
+
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                const isHidden = mobileMenu.classList.toggle('hidden');
+                if (mobileMenuIcon) {
+                    mobileMenuIcon.className = isHidden ? 'fa-solid fa-bars text-xl' : 'fa-solid fa-xmark text-xl';
+                }
+            });
+        }
+
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        renderCourses();
+
+        // Marquee Play/Pause
+        const partnersMarqueeTrack = document.getElementById('partnersMarqueeTrack');
+        const toggleMarqueeBtn = document.getElementById('toggleMarqueeBtn');
+        const toggleMarqueeIcon = document.getElementById('toggleMarqueeIcon');
+        const toggleMarqueeText = document.getElementById('toggleMarqueeText');
+
+        if (toggleMarqueeBtn && partnersMarqueeTrack) {
+            toggleMarqueeBtn.addEventListener('click', () => {
+                const isPaused = partnersMarqueeTrack.classList.toggle('paused');
+                toggleMarqueeIcon.className = isPaused ? 'fa-solid fa-play text-[10px] text-emerald-600' : 'fa-solid fa-pause text-[10px] text-blue-600';
+                toggleMarqueeText.textContent = isPaused ? 'Resume Scroll' : 'Pause Scroll';
+            });
+        }
+    </script>
+</body>
+</html>
